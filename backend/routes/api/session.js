@@ -39,8 +39,11 @@ router.post(
 
     await setTokenCookie(res, user);
 
+    // show token with user
+    user.dataValues.token = req.headers['xsrf-token'];
+
     return res.json({
-      user: user
+      user: user,
     });
   }
 );

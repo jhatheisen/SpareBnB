@@ -42,6 +42,8 @@ router.post('/', validateSignup, async (req, res) => {
 
   await setTokenCookie(res, user);
 
+  user.dataValues.token = req.headers['xsrf-token'];
+
   return res.json({
     user: user
   });
