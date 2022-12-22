@@ -764,8 +764,8 @@ Create and return a new review for a spot specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /api/spots/:id/reviews
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -845,15 +845,16 @@ Create and return a new image for a review specified by id.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /api/reviews/:id/images
   * Headers:
     * Content-Type: application/json
   * Body:
 
     ```json
     {
-      "url": "image url"
+      "url": "image url",
+      "previewImage": true
     }
     ```
 
@@ -866,7 +867,8 @@ Create and return a new image for a review specified by id.
     ```json
     {
       "id": 1,
-      "url": "image url"
+      "url": "image url",
+      "previewImage": true
     }
     ```
 

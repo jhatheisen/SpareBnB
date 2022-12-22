@@ -4,6 +4,9 @@ const { Spot, User, Review, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 // takes in id returns avg rating of all reviews for that spot id
 async function getAvgRating(id) {
   const reviews = await Review.findAll({
@@ -149,7 +152,7 @@ function validateSpot(address, city, state, country, lat, lng, name, description
   if (isNaN(lng) || !lng) errors.push("Longitude is not valid");
   if (!name || name.length < 1 || name.length >= 50) errors.push("Name must be between 1 and 50 characters");
   if (!description) errors.push("Description is required");
-  if (!price) errors.push("Price per day is required");
+  if ((!price || isNaN(price)) || price % 1 !== 0) errors.push("Price per day is required");
 
   if (errors.length) {
     return {
@@ -353,10 +356,86 @@ router.delete('/:id', async (req, res) => {
 
   spot.destroy();
 
-  res.json({
+  return res.json({
     message: "Successfully deleted",
     statusCode: 200
   })
 });
+
+// create a review for a spot
+router.post('/:id/reviews', async (req, res) => {
+
+  // authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  // current user has already reviewed
+  const currReview = await Review.findOne({
+    where: {
+      [Op.and]: [
+        {spotId: spotId},
+        {userId: req.user.id}
+      ]
+    }
+  });
+
+  if (currReview) {
+    res.status(403);
+    return res.json(
+      {
+        message: "User already has a review for this spot",
+        statusCode: 403
+      }
+    );
+  }
+
+  const { review, stars } = req.body;
+
+  // body validations
+  const errors = [];
+
+  if (!review) errors.push("Review text is required");
+  if ((!stars || isNaN(stars)) || (stars < 1 || stars > 5) || stars % 1 != 0) errors.push("Stars must be an integer from 1 to 5");
+
+  if (errors.length) {
+    res.status(400);
+    return res.json({
+      "message": "Validation error",
+      "statusCode": 400,
+      errors
+    });
+  }
+
+  const newReview = await Review.create({
+    userId: req.user.id,
+    spotId,
+    review,
+    stars
+  })
+
+  return res.json(newReview);
+});
+
 
 module.exports = router;
