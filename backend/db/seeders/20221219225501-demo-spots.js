@@ -23,7 +23,7 @@ module.exports = {
       ownerId: 4,
       address: "123 Disney Lane",
       city: "San Francisco",
-      state: "California",
+      state: "testStateUSA",
       country: "United States of America",
       lat: 37.7645358,
       lng: -122.4730327,
@@ -36,7 +36,7 @@ module.exports = {
       ownerId: 5,
       address: "12 Disey Lne",
       city: "San Franco",
-      state: "Caornia",
+      state: "testStateUSA",
       country: "United America",
       lat: 3.7645358,
       lng: -12.4730327,
@@ -55,6 +55,10 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete('Spots', null, { truncate: true, cascade: true });
+    options.tableName = 'Spots';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      state: { [Op.in]: ['testStateUSA'] }
+    }, {});
   }
 };
