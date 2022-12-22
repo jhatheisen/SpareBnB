@@ -20,7 +20,7 @@ module.exports = {
    options.tableName = 'Spots'
    await queryInterface.bulkInsert(options, [
     {
-      ownerId: 1,
+      ownerId: 4,
       address: "123 Disney Lane",
       city: "San Francisco",
       state: "California",
@@ -33,7 +33,7 @@ module.exports = {
       previewImage: "image url"
     },
     {
-      ownerId: 2,
+      ownerId: 5,
       address: "12 Disey Lne",
       city: "San Franco",
       state: "Caornia",
@@ -55,10 +55,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'Spots';
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['App Academy']}
-    }, {});
+    return queryInterface.bulkDelete('Spots', null, { truncate: true, cascade: true });
   }
 };

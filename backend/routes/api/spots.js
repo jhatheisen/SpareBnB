@@ -1,30 +1,362 @@
 const express = require('express');
 
-const { Spot } = require('../../db/models');
+const { Spot, User, Review, SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
+// takes in id returns avg rating of all reviews for that spot id
+async function getAvgRating(id) {
+  const reviews = await Review.findAll({
+    where: {
+      spotId: id
+    }
+  });
+
+  let stars = 0;
+  let count = 0;
+
+  for (review of reviews) {
+    stars += review.dataValues.stars;
+    count++;
+  }
+
+  const avgRating = stars / count;
+
+  if (isNaN(avgRating)) {
+    return -1;
+  }
+
+  return avgRating;
+}
+
+// get all spots
 router.get('/', async (req, res) => {
 
+  // aggregate loading
   const spots = await Spot.findAll();
 
-  res.json(
+  for (spot of spots) {
+    const id = spot.dataValues.id
+
+    const avgRating = await getAvgRating(id);
+
+    if (avgRating !== -1) {
+      spot.dataValues.avgRating = avgRating;
+      console.log(avgRating);
+    }
+  }
+
+  return res.json(
     {
-    Spots: spots
+    Spots: spots,
     }
   );
 });
 
+// get user spots
+router.get('/user', async (req, res) => {
+
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spots = await Spot.findAll({
+    where: {
+      ownerId: req.user.id
+    }
+  });
+
+  for (spot of spots) {
+    const id = spot.dataValues.id
+    console.log(id);
+    const avgRating = await getAvgRating(id);
+    console.log(avgRating);
+
+    if (avgRating !== -1) {
+      spot.dataValues.avgRating = avgRating;
+      console.log(avgRating);
+    }
+  }
+
+  return res.json(
+    {
+    Spots: spots,
+    }
+  );
+});
+
+// get spots by id
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const spotsById = await Spot.findByPk(id);
-
-  res.json(
+  const spotById = await Spot.findByPk(id, {
+    include: [{
+      model: User,
+      as: 'Owner',
+      attributes: ['id', 'firstName', 'lastName']
+    },
     {
-      Spots: spotsById
+      model: SpotImage,
+      attributes: ['id', 'url', 'preview']
+    }]
+  });
+
+  if (!spotById) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  const numReviews = await Review.count({
+    where: {
+      spotId: id
+    }
+  })
+
+  if (numReviews) spotById.dataValues.numReviews = numReviews;
+
+  const avgStarRating = await getAvgRating(id);
+
+  if (avgStarRating !== -1) {
+    spotById.dataValues.avgStarRating = avgStarRating;
+  }
+
+  return res.json(
+    {
+      Spots: spotById
     }
   )
+});
+
+function validateSpot(address, city, state, country, lat, lng, name, description, price) {
+  const errors = [];
+
+  if (!address) errors.push("Street address is required");
+  if (!city) errors.push("City is required");
+  if (!state) errors.push("State is required");
+  if (!country) errors.push("Country is required");
+  if (isNaN(lat) || !lat) errors.push("Latitude is not valid");
+  if (isNaN(lng) || !lng) errors.push("Longitude is not valid");
+  if (!name || name.length < 1 || name.length >= 50) errors.push("Name must be between 1 and 50 characters");
+  if (!description) errors.push("Description is required");
+  if (!price) errors.push("Price per day is required");
+
+  if (errors.length) {
+    return {
+      "message": "Validation Error",
+      "statusCode": 400,
+      errors
+    }
+  }
+}
+
+// create new spot
+router.post('/', async (req, res) => {
+  const {address, city, state, country, lat, lng, name, description, price} = req.body;
+
+  const error = validateSpot(address, city, state, country, lat, lng, name, description, price);
+
+  if (error) {
+    res.status(400);
+    return res.json(error);
+  }
+
+  const newSpot = await Spot.create({
+    ownerId: req.user.id,
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  });
+
+  delete newSpot.dataValues.createdAt;
+  delete newSpot.dataValues.updatedAt;
+  delete newSpot.dataValues.id;
+  delete newSpot.dataValues.ownerId;
+
+  return res.json(newSpot);
+});
+
+// add an image to a spot based on spot id
+router.post('/:id/images', async (req, res) => {
+
+  // not logged in
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  // not owned by user
+  if (spot.dataValues.ownerId !== req.user.id) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Forbidden",
+        statusCode: 403
+      }
+    );
+  }
+
+  const { url, preview, previewImage } = req.body;
+
+  const newImg = await SpotImage.create({
+    spotId,
+    url,
+    preview: preview || previewImage,
+  });
+
+  delete newImg.dataValues.createdAt;
+  delete newImg.dataValues.updatedAt;
+  delete newImg.dataValues.spotId;
+
+  return res.json(newImg);
+});
+
+// edit a spot
+router.put('/:id', async (req, res) => {
+
+  // authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  // not owned by user
+  if (spot.dataValues.ownerId !== req.user.id) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Forbidden",
+        statusCode: 403
+      }
+    );
+  }
+
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  const error = validateSpot(address, city, state, country, lat, lng, name, description, price);
+
+  if (error) {
+    res.status(400);
+    return res.json(error);
+  }
+
+  spot.set({
+    address: address,
+    city: city,
+    state: state,
+    country: country,
+    lat: lat,
+    lng: lng,
+    name: name,
+    description: description,
+    price: price,
+  });
+
+  await spot.save();
+
+  delete spot.dataValues.previewImage;
+
+  return res.json(spot);
+});
+
+// delete a spot
+router.delete('/:id', async (req, res) => {
+    // authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  // not owned by user
+  if (spot.dataValues.ownerId !== req.user.id) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Forbidden",
+        statusCode: 403
+      }
+    );
+  }
+
+  spot.destroy();
+
+  res.json({
+    message: "Successfully deleted",
+    statusCode: 200
+  })
 });
 
 module.exports = router;

@@ -11,7 +11,7 @@ module.exports = {
       },
       ownerId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       address: {
         type: Sequelize.STRING(50),
@@ -40,7 +40,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
       },
       description: {
         type: Sequelize.STRING(255),
@@ -52,7 +51,6 @@ module.exports = {
       },
       previewImage: {
         type: Sequelize.STRING,
-        allowNull: false
       },
       createdAt: {
         allowNull: false,

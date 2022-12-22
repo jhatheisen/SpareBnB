@@ -52,8 +52,8 @@ Returns the information about the current user that is logged in.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/session
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -93,8 +93,8 @@ information.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /api/session
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -110,6 +110,7 @@ information.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
+    * XSRF-TOKEN: `<value of XSRF-TOKEN cookie>`
   * Body:
 
     ```json
@@ -120,7 +121,7 @@ information.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith",
-        "token": ""
+        "token": "<value of XSRF-TOKEN cookie>"
       }
     }
     ```
@@ -162,10 +163,11 @@ user's information.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /api/users
   * Headers:
     * Content-Type: application/json
+    * XSRF-TOKEN: `<value of XSRF-TOKEN cookie>`
   * Body:
 
     ```json
@@ -192,7 +194,7 @@ user's information.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith",
-        "token": ""
+        "token": "<value of XSRF-TOKEN cookie>"
       }
     }
     ```
@@ -256,8 +258,8 @@ Returns all the spots.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/spots
   * Body: none
 
 * Successful Response
@@ -296,8 +298,8 @@ Returns all the spots owned (created) by the current user.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/spots/user
   * Body: none
 
 * Successful Response
@@ -336,8 +338,8 @@ Returns the details of a spot specified by its id.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/spots/:id
   * Body: none
 
 * Successful Response
@@ -402,8 +404,8 @@ Creates and returns a new spot.
 
 * Require Authentication: true
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /api/spots
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -463,7 +465,7 @@ Creates and returns a new spot.
         "Country is required",
         "Latitude is not valid",
         "Longitude is not valid",
-        "Name must be less than 50 characters",
+        "Name must be between 1 and 50 characters",
         "Description is required",
         "Price per day is required"
       ]
@@ -477,8 +479,8 @@ Create and return a new image for a spot specified by id.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: POST
+  * URL: /spots/5000/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -524,8 +526,8 @@ Updates and returns an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: put
+  * URL: /api/spots/:id
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -612,8 +614,8 @@ Deletes an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /api/spots/:id
   * Body: none
 
 * Successful Response
