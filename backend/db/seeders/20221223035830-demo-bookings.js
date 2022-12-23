@@ -39,7 +39,7 @@ module.exports = {
     const Op = sequelize.Op;
     return queryInterface.bulkDelete(options, {
       userId: { [Op.in]: [1, 4, 3]}
-    });
+    }, {});
 
   }
 };
