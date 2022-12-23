@@ -71,6 +71,7 @@ router.post('/:id/images', async (req, res) => {
 
   delete newImage.dataValues.createdAt;
   delete newImage.dataValues.updatedAt;
+  delete newImage.dataValues.reviewId;
 
   return res.json(newImage);
 
@@ -179,7 +180,7 @@ router.put('/:id', async (req, res) => {
 
 // delete review by id
 router.delete('/:id', async (req, res) => {
-  
+
   // authentication 401
   if (req.user === null) {
     res.status(401);
