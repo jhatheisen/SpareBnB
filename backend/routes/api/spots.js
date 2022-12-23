@@ -108,7 +108,11 @@ router.get('/', async (req, res) => {
   }
 
   const limit = size;
-  const offset = (size * (page - 1));
+  if (page === 0) {
+    const offset = (size * (page));
+  } else {
+    const offset = (size * (page - 1));
+  }
 
   // other query
   const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
@@ -590,7 +594,7 @@ router.get('/:id/reviews', async (req, res) => {
 
 // create a booking
 router.post('/:id/bookings', async (req, res) => {
-  
+
   // authentication 401
   if (req.user === null) {
     res.status(401);
