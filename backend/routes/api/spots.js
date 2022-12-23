@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Spot, User, Review, SpotImage } = require('../../db/models');
+const { Spot, User, Review, SpotImage, ReviewImage } = require('../../db/models');
 
 const router = express.Router();
 
@@ -141,6 +141,7 @@ router.get('/:id', async (req, res) => {
   )
 });
 
+// validate spot
 function validateSpot(address, city, state, country, lat, lng, name, description, price) {
   const errors = [];
 
@@ -435,6 +436,43 @@ router.post('/:id/reviews', async (req, res) => {
   })
 
   return res.json(newReview);
+});
+
+// get reviews by spot id
+router.get('/:id/reviews', async (req, res) => {
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  const reviews = await Review.findAll({
+    where: {
+      spotId: req.params.id
+    },
+    include: [
+      { model: User },
+      {
+        model: Spot,
+        attributes: {exclude: ['createdAt', 'updatedAt']}
+      },
+      {
+        model: ReviewImage,
+        attributes: {exclude: ['createdAt', 'updatedAt']}
+      }
+    ]
+  });
+
+  return res.json({Reviews: reviews});
 });
 
 
