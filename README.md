@@ -480,7 +480,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /spots/5000/images
+  * URL: /api/spots/5000/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1209,7 +1209,7 @@ Update and return an existing booking.
 * Require proper authorization: Booking must belong to the current user
 * Request
   * Method: PUT
-  * URL: /:bookingId
+  * URL: /api/bookings/:bookingId
   * Headers:
     * Content-Type: application/json
   * Body:
