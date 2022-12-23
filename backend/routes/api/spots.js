@@ -156,7 +156,7 @@ router.get('/', async (req, res) => {
 });
 
 // get user spots
-router.get('/user', async (req, res) => {
+router.get('/current', async (req, res) => {
 
   // authentication 401
   if (req.user === null) {
