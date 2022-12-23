@@ -1,12 +1,9 @@
 'use strict';
 
-const { sequelize } = require('../models');
-
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
-
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -41,7 +38,7 @@ module.exports = {
     options.tableName = 'Bookings';
     const Op = sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      userId: { [Op.in]: [1, 2]}
+      userId: { [Op.in]: [1, 4, 3]}
     });
 
   }
