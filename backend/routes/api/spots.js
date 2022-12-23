@@ -1,10 +1,11 @@
 const express = require('express');
 
-const { Spot, User, Review, SpotImage, ReviewImage } = require('../../db/models');
+const { Spot, User, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');
 
 const router = express.Router();
 
 const Sequelize = require('sequelize');
+
 const Op = Sequelize.Op;
 
 // takes in id returns avg rating of all reviews for that spot id
@@ -475,5 +476,169 @@ router.get('/:id/reviews', async (req, res) => {
   return res.json({Reviews: reviews});
 });
 
+// create a booking
+router.post('/:id/bookings', async (req, res) => {
+  // authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = Number(req.params.id);
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  const userId = req.user.id;
+
+  // if owned by user
+  if (spot.dataValues.ownerId === userId) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Forbidden, the owner cannot book their own spot.",
+        statusCode: 403
+      }
+    );
+  }
+
+  let { startDate, endDate } = req.body;
+
+  // null errors
+  const errors = [];
+
+  if (!startDate) errors.push("Must have a Start Date");
+  if (!endDate) errors.push("Must have a End Date");
+
+  if (errors.length) {
+    res.status(400);
+    return res.json({
+      message: "Validation Error",
+      statusCode: 400,
+      errors
+    });
+  }
+
+  // turn to date object
+  startDate = new Date(startDate);
+
+  endDate = new Date(endDate);
+
+
+  // body errors
+  if (endDate <= startDate) errors.push("End Date cannot be on or before Start Date");
+
+  if (errors.length) {
+    res.status(400);
+    return res.json({
+      message: "Validation Error",
+      statusCode: 400,
+      errors
+    });
+  }
+
+  const allSpotBookings = await Booking.findAll({
+    where: {
+      spotId: spotId
+    }
+  });
+
+  for (booking of allSpotBookings) {
+    const bookingErrors = [];
+    const start = booking.dataValues.startDate;
+    const end = booking.dataValues.endDate;
+
+    if (start >= startDate && start <= endDate) bookingErrors.push("Start date conflicts with an existing booking");
+    if (end >= startDate && end <= endDate) bookingErrors.push("End date conflicts with an existing booking");
+    if (bookingErrors.length) {
+      res.status(403);
+      return res.json({
+        message: "Sorry, this spot is already booked for the specified dates",
+        statusCode: 403,
+        errors: bookingErrors
+      });
+    }
+  }
+
+  const newBooking = await Booking.create({
+    spotId,
+    userId,
+    startDate,
+    endDate
+  });
+
+  return res.json(newBooking);
+});
+
+// get all bookings for a spot by spotId
+router.get('/:id/bookings', async (req, res) => {
+  // authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+
+  // doesn't exist
+  if (!spot) {
+    res.status(404);
+    return res.json(
+      {
+        message: "Spot couldn't be found",
+        statusCode: 404
+      }
+    );
+  }
+
+  const ownerId = Number(spot.dataValues.ownerId);
+  const userId = req.user.id;
+
+  // if you are not owner
+  if (ownerId !== userId){
+    const bookings = await Booking.findAll({
+      where: {
+        spotId
+      },
+      attributes: ['spotId', 'startDate', 'endDate']
+    });
+
+    return res.json({Bookings: bookings});
+
+  } else {
+    const bookings = await Booking.findAll({
+      where: {
+        spotId
+      },
+      include: {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName',]
+      }
+    });
+
+    return res.json({Bookings: bookings});
+  }
+
+});
 
 module.exports = router;
