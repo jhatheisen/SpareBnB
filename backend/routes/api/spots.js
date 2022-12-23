@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
   // page and size query
   let { page, size } = req.query;
 
-  (!page || isNaN(page)) ? page = 0 : page = parseInt(page);
+  (!page || isNaN(page)) ? page = 1 : page = parseInt(page);
   (!size || isNaN(size)) ? size = 20 : size = parseInt(size);
 
   const errors = [];
@@ -108,11 +108,7 @@ router.get('/', async (req, res) => {
   }
 
   const limit = size;
-  if (page === 0) {
-    const offset = (size * (page));
-  } else {
-    const offset = (size * (page - 1));
-  }
+  const offset = (size * (page - 1));
 
   // other query
   const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
