@@ -1358,8 +1358,8 @@ Delete an existing image for a Spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /api/spots/images/:spotImageId
   * Body: none
 
 * Successful Response
@@ -1395,8 +1395,8 @@ Delete an existing image for a Review.
 * Require Authentication: true
 * Require proper authorization: Review must belong to the current user
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: DELETE
+  * URL: /api/images/:reviewImageId
   * Body: none
 
 * Successful Response
@@ -1431,8 +1431,8 @@ Return spots filtered by query parameters.
 
 * Require Authentication: false
 * Request
-  * Method: ?
-  * URL: ?
+  * Method: GET
+  * URL: /api/spots
   * Query Parameters
     * page: integer, minimum: 0, maximum: 10, default: 0
     * size: integer, minimum: 0, maximum: 20, default: 20
@@ -1486,14 +1486,14 @@ Return spots filtered by query parameters.
       "message": "Validation Error",
       "statusCode": 400,
       "errors": [
-        "Page must be greater than or equal to 0",
+        "Page must be between 0 and 10",
         "Size must be greater than or equal to 0",
         "Maximum latitude is invalid",
         "Minimum latitude is invalid",
         "Maximum longitude is invalid",
         "Minimum longitude is invalid",
-        "Maximum price must be greater than or equal to 0",
-        "Minimum price must be greater than or equal to 0"
+        "Maximum price must be a number greater than or equal to 0",
+        "Minimum price must be a number greater than or equal to 0"
       ]
     }
     ```

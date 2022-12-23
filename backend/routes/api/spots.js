@@ -8,6 +8,56 @@ const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
 
+function validateQuery(minLat, maxLat, minLng, maxLng, minPrice, maxPrice) {
+
+  const filter = {};
+
+  const errors = [];
+
+  // min lat
+  if (isNaN(minLat) && minLat) errors.push("Minimum latitude is invalid");
+  if (minLat !== undefined) filter.lat = { [Op.gte]: minLat};
+
+  // max lat
+  if (isNaN(maxLat) && maxLat) errors.push("Maximum latitude is invalid");
+  if (maxLat !== undefined && 'lat' in filter) {
+    filter.lat[Op.lte] = maxLat;
+  } else if (maxLat !== undefined) {
+    filter.lat = { [Op.lte]: maxLat};
+  }
+
+  // min lng
+  if (isNaN(minLng) && minLng) errors.push("Minimum longitude is invalid");
+  if (minLng !== undefined) filter.lng = { [Op.gte]: minLng};
+
+  // max lng
+  if (isNaN(maxLng) && maxLng) errors.push("Maximum longitude is invalid");
+  if (maxLng !== undefined && 'lng' in filter) {
+    filter.lng[Op.lte] = maxLng;
+  } else if (maxLng !== undefined) {
+    filter.lng = { [Op.lte]: maxLng};
+  }
+
+  // minPrice
+  if ((isNaN(minPrice) && minPrice) || minPrice < 0) errors.push("Minimum price must be a number greater than or equal to 0");
+  if (minPrice !== undefined) filter.price = { [Op.gte]: minPrice};
+
+  //max price
+  if ((isNaN(maxPrice) && maxPrice) || maxPrice < 0) errors.push("Maximum price must be a number greater than or equal to 0");
+  if (maxPrice !== undefined && 'price' in filter) {
+    filter.price[Op.lte] = maxPrice;
+  } else if (maxPrice !== undefined) {
+    filter.price = { [Op.lte]: maxPrice};
+  }
+
+  // if errors exist
+  if (errors.length) {
+    return errors;
+  }
+
+  return filter;
+}
+
 // takes in id returns avg rating of all reviews for that spot id
 async function getAvgRating(id) {
   const reviews = await Review.findAll({
@@ -36,8 +86,55 @@ async function getAvgRating(id) {
 // get all spots
 router.get('/', async (req, res) => {
 
+  // page and size query
+  let { page, size } = req.query;
+
+  (!page || isNaN(page)) ? page = 0 : page = parseInt(page);
+  (!size || isNaN(size)) ? size = 20 : size = parseInt(size);
+
+  const errors = [];
+
+  if (page < 0 || page > 10) errors.push("Page must be between 0 and 10");
+  if (page < 0 || page > 20) errors.push("Size must be between 0 and 20");
+
+  // if errors exist
+  if (errors.length) {
+    res.status(400);
+    return res.json({
+      message: "Validation Error",
+      statusCode: 400,
+      errors
+    });
+  }
+
+  const limit = size;
+  const offset = (size * (page - 1));
+
+  // other query
+  const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+  let validation = validateQuery(minLat, maxLat, minLng, maxLng, minPrice, maxPrice);
+
+
+  if (Array.isArray(validation)) {
+    res.status(400);
+    return res.json({
+      message: "Validation Error",
+      statusCode: 400,
+      validation
+    });
+  }
+
+  const filter = validation;
+
+  console.log(filter);
+
   // aggregate loading
-  const spots = await Spot.findAll();
+  const spots = await Spot.findAll({
+    where: filter,
+    limit,
+    offset,
+  });
 
   for (spot of spots) {
     const id = spot.dataValues.id
@@ -46,13 +143,14 @@ router.get('/', async (req, res) => {
 
     if (avgRating !== -1) {
       spot.dataValues.avgRating = avgRating;
-      console.log(avgRating);
     }
   }
 
   return res.json(
     {
     Spots: spots,
+    page,
+    size
     }
   );
 });
@@ -61,11 +159,11 @@ router.get('/', async (req, res) => {
 router.get('/user', async (req, res) => {
 
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -167,6 +265,17 @@ function validateSpot(address, city, state, country, lat, lng, name, description
 
 // create new spot
 router.post('/', async (req, res) => {
+
+  if (req.user === null) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 403
+      }
+    );
+  }
+
   const {address, city, state, country, lat, lng, name, description, price} = req.body;
 
   const error = validateSpot(address, city, state, country, lat, lng, name, description, price);
@@ -202,11 +311,11 @@ router.post('/:id/images', async (req, res) => {
 
   // not logged in
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -256,11 +365,11 @@ router.put('/:id', async (req, res) => {
 
   // authenticate
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -322,11 +431,11 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     // authenticate
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -350,7 +459,7 @@ router.delete('/:id', async (req, res) => {
     res.status(403);
     return res.json(
       {
-        message: "Forbidden",
+        message: "Forbidden, cannot delete other people's Spots",
         statusCode: 403
       }
     );
@@ -369,11 +478,11 @@ router.post('/:id/reviews', async (req, res) => {
 
   // authenticate
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -480,11 +589,11 @@ router.get('/:id/reviews', async (req, res) => {
 router.post('/:id/bookings', async (req, res) => {
   // authenticate
   if (req.user === null) {
-    res.status(401);
+    res.status(403);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 401
+        statusCode: 403
       }
     );
   }
@@ -639,6 +748,60 @@ router.get('/:id/bookings', async (req, res) => {
     return res.json({Bookings: bookings});
   }
 
+});
+
+// delete spot image by spot image id
+router.delete('/images/:id', async (req, res) => {
+
+  // 1. authenticate
+  if (req.user === null) {
+    res.status(401);
+    return res.json(
+      {
+        message: "Authentication required",
+        statusCode: 401
+      }
+    );
+  }
+
+  // 2. check if Spot Image exists
+
+  const spotImageId = req.params.id;
+  const targetImage = await SpotImage.findByPk(spotImageId);
+
+  // cannot find spot image
+  if (!targetImage) {
+    res.status(404);
+    return res.json({
+      message: "Spot Image couldn't be found",
+      statusCode: 404
+    });
+  }
+
+  const spotId = targetImage.dataValues.spotId;
+
+  const spot = await Spot.findByPk(spotId);
+
+  const ownerId = spot.dataValues.ownerId;
+
+  const userId = req.user.id;
+
+  if (ownerId !== userId) {
+    res.status(403);
+    return res.json(
+      {
+        message: "Forbidden, cannot delete other people's Spot Images",
+        statusCode: 403
+      }
+    );
+  }
+
+  await targetImage.destroy();
+
+  return res.json({
+    message: "Successfully deleted",
+    statusCode: 200
+  });
 });
 
 module.exports = router;
