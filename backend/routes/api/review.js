@@ -7,7 +7,8 @@ const { Review, ReviewImage, User, Spot } = require('../../db/models');
 
 // create an image for a review by review id
 router.post('/:id/images', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -77,7 +78,8 @@ router.post('/:id/images', async (req, res) => {
 
 // get all reviews for current user
 router.get('/current', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -111,7 +113,8 @@ router.get('/current', async (req, res) => {
 
 // edit review by review id
 router.put('/:id', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -176,7 +179,8 @@ router.put('/:id', async (req, res) => {
 
 // delete review by id
 router.delete('/:id', async (req, res) => {
-  // authenticate
+  
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(

@@ -158,12 +158,13 @@ router.get('/', async (req, res) => {
 // get user spots
 router.get('/user', async (req, res) => {
 
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -266,12 +267,13 @@ function validateSpot(address, city, state, country, lat, lng, name, description
 // create new spot
 router.post('/', async (req, res) => {
 
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -309,13 +311,13 @@ router.post('/', async (req, res) => {
 // add an image to a spot based on spot id
 router.post('/:id/images', async (req, res) => {
 
-  // not logged in
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -363,13 +365,13 @@ router.post('/:id/images', async (req, res) => {
 // edit a spot
 router.put('/:id', async (req, res) => {
 
-  // authenticate
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -429,13 +431,14 @@ router.put('/:id', async (req, res) => {
 
 // delete a spot
 router.delete('/:id', async (req, res) => {
-    // authenticate
+
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -476,13 +479,13 @@ router.delete('/:id', async (req, res) => {
 // create a review for a spot
 router.post('/:id/reviews', async (req, res) => {
 
-  // authenticate
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -587,13 +590,14 @@ router.get('/:id/reviews', async (req, res) => {
 
 // create a booking
 router.post('/:id/bookings', async (req, res) => {
-  // authenticate
+  
+  // authentication 401
   if (req.user === null) {
-    res.status(403);
+    res.status(401);
     return res.json(
       {
         message: "Authentication required",
-        statusCode: 403
+        statusCode: 401
       }
     );
   }
@@ -695,7 +699,8 @@ router.post('/:id/bookings', async (req, res) => {
 
 // get all bookings for a spot by spotId
 router.get('/:id/bookings', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(

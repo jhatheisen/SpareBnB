@@ -10,7 +10,8 @@ const Op = Sequelize.Op;
 
 // get all bookings for current user
 router.get('/current', async (req, res) => {
-  // authenticate
+  
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
