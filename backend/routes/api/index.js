@@ -4,6 +4,7 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const spotsRouter = require('./spots.js');
 const reviewRouter = require('./review.js');
+const bookingsRouter = require('./bookings.js');
 const { restoreUser } = require("../../utils/auth.js");
 
 // Connect restoreUser middleware to the API router
@@ -18,5 +19,7 @@ router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 
 router.use('/reviews', reviewRouter);
+
+router.use('/bookings', bookingsRouter);
 
 module.exports = router;

@@ -33,7 +33,7 @@ module.exports = {
       previewImage: "image url"
     },
     {
-      ownerId: 5,
+      ownerId: 2,
       address: "12 Disey Lne",
       city: "San Franco",
       state: "testStateUSA",
