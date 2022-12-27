@@ -86,7 +86,9 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+          msg: "User with that email already exists"
+        },
         validate: {
           len: [3, 256],
           isEmail: true

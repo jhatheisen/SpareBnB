@@ -72,7 +72,11 @@ app.use(
 
 // Error formatter
 app.use((err, _req, res, _next) => {
-  res.status(err.status || 500);
+  if (err.message === "Validation error") {
+    res.status(403);
+  } else {
+    res.status(err.status || 500);
+  }
   console.error(err);
   res.json({
     message: err.message,
