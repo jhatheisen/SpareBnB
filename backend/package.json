@@ -30,7 +30,7 @@
     "node-fetch": "^2.6.7",
     "per-env": "^1.0.2",
     "pg": "^8.8.0",
-    "sequelize": "^6.27.0",
+    "sequelize": "^6.28.0",
     "sequelize-cli": "^6.5.2"
   },
   "devDependencies": {
