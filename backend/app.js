@@ -72,15 +72,16 @@ app.use(
 
 // Error formatter
 app.use((err, _req, res, _next) => {
-  if (err.message === "User with that email already exists") {
+  if (err.message === "User with that email already exists" || err.message === "User with that username already exists") {
     err.message = "User already exists";
+    res.status(403);
   } else {
     res.status(err.status || 500);
   }
   console.error(err);
   res.json({
     message: err.message,
-    statusCode: err.status || 500,
+    statusCode: res.statusCode,
     errors: err.errors,
   });
 });

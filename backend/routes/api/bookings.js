@@ -10,7 +10,7 @@ const Op = Sequelize.Op;
 
 // get all bookings for current user
 router.get('/current', async (req, res) => {
-  
+
   // authentication 401
   if (req.user === null) {
     res.status(401);
@@ -28,10 +28,11 @@ router.get('/current', async (req, res) => {
     where: {
       userId
     },
-    include: {
-      model: Spot,
-      attributes: { exclude: ['createdAt', 'updatedAt']}
-    }
+    include:
+      {
+        model: Spot,
+        attributes: {exclude: ['createdAt', 'updatedAt', 'description']}
+      }
   });
 
   return res.json({

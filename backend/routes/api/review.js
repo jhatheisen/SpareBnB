@@ -97,14 +97,16 @@ router.get('/current', async (req, res) => {
       userId: req.user.id
     },
     include: [
-      { model: User },
+      { model: User,
+        attributes: { exclude: ['username', 'createdAt', 'updatedAt', 'hashedPassword', 'email'] }
+      },
       {
         model: Spot,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'description']}
       },
       {
         model: ReviewImage,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'previewImage', 'reviewId']}
       }
     ]
   });
