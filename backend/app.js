@@ -72,8 +72,9 @@ app.use(
 
 // Error formatter
 app.use((err, _req, res, _next) => {
-  if (err.message === "Validation error") {
+  if (err.message === "User with that email already exists") {
     res.status(403);
+    err.message = "User already exists";
   } else {
     res.status(err.status || 500);
   }

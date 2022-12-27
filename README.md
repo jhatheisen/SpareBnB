@@ -1,9 +1,8 @@
-# `AirBnB Clone`
+# AirBnB Clone
 
 ## Database Schema Design
 
 ![Schema](airbnbSchema.png)
-
 
 ## API Documentation
 
@@ -56,7 +55,7 @@ Returns the information about the current user that is logged in.
   * URL: /api/session
   * Body: none
 
-* Successful Response when there is a logged in user
+* Successful Response
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
@@ -72,18 +71,7 @@ Returns the information about the current user that is logged in.
         "username": "JohnSmith"
       }
     }
-    ```
 
-* Successful Response when there is no logged in user
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "user": null
-    }
     ```
 
 ### Log In a User
@@ -110,7 +98,6 @@ information.
   * Status Code: 200
   * Headers:
     * Content-Type: application/json
-    * XSRF-TOKEN: `<value of XSRF-TOKEN cookie>`
   * Body:
 
     ```json
@@ -120,8 +107,7 @@ information.
         "firstName": "John",
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
-        "username": "JohnSmith",
-        "token": "<value of XSRF-TOKEN cookie>"
+        "username": "JohnSmith"
       }
     }
     ```
@@ -149,10 +135,10 @@ information.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "Email or username is required",
-        "Password is required"
-      ]
+      "errors": {
+        "credential": "Email or username is required",
+        "password": "Password is required"
+      }
     }
     ```
 
@@ -167,7 +153,6 @@ user's information.
   * URL: /api/users
   * Headers:
     * Content-Type: application/json
-    * XSRF-TOKEN: `<value of XSRF-TOKEN cookie>`
   * Body:
 
     ```json
@@ -188,14 +173,12 @@ user's information.
 
     ```json
     {
-      "user": {
-        "id": 1,
-        "firstName": "John",
-        "lastName": "Smith",
-        "email": "john.smith@gmail.com",
-        "username": "JohnSmith",
-        "token": "<value of XSRF-TOKEN cookie>"
-      }
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john.smith@gmail.com",
+      "username": "JohnSmith",
+      "token": ""
     }
     ```
 
@@ -209,9 +192,9 @@ user's information.
     {
       "message": "User already exists",
       "statusCode": 403,
-      "errors": [
-        "User with that email already exists"
-      ]
+      "errors": {
+        "email": "User with that email already exists"
+      }
     }
     ```
 
@@ -225,9 +208,9 @@ user's information.
     {
       "message": "User already exists",
       "statusCode": 403,
-      "errors": [
-        "User with that username already exists"
-      ]
+      "errors": {
+        "username": "User with that username already exists"
+      }
     }
     ```
 
@@ -241,12 +224,12 @@ user's information.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "Invalid email",
-        "Username is required",
-        "First Name is required",
-        "Last Name is required"
-      ]
+      "errors": {
+        "email": "Invalid email",
+        "username": "Username is required",
+        "firstName": "First Name is required",
+        "lastName": "Last Name is required"
+      }
     }
     ```
 
@@ -458,17 +441,17 @@ Creates and returns a new spot.
     {
       "message": "Validation Error",
       "statusCode": 400,
-      "errors": [
-        "Street address is required",
-        "City is required",
-        "State is required",
-        "Country is required",
-        "Latitude is not valid",
-        "Longitude is not valid",
-        "Name must be between 1 and 50 characters",
-        "Description is required",
-        "Price per day is required"
-      ]
+      "errors": {
+        "address": "Street address is required",
+        "city": "City is required",
+        "state": "State is required",
+        "country": "Country is required",
+        "lat": "Latitude is not valid",
+        "lng": "Longitude is not valid",
+        "name": "Name must be less than 50 characters",
+        "description": "Description is required",
+        "price": "Price per day is required"
+      }
     }
     ```
 
@@ -480,7 +463,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /api/spots/5000/images
+  * URL: /api/spots/:spotId/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -526,7 +509,7 @@ Updates and returns an existing spot.
 * Require Authentication: true
 * Require proper authorization: Spot must belong to the current user
 * Request
-  * Method: put
+  * Method: PUT
   * URL: /api/spots/:spotId
   * Headers:
     * Content-Type: application/json
@@ -580,17 +563,17 @@ Updates and returns an existing spot.
     {
       "message": "Validation Error",
       "statusCode": 400,
-      "errors": [
-        "Street address is required",
-        "City is required",
-        "State is required",
-        "Country is required",
-        "Latitude is not valid",
-        "Longitude is not valid",
-        "Name must be less than 50 characters",
-        "Description is required",
-        "Price per day is required"
-      ]
+      "errors": {
+        "address": "Street address is required",
+        "city": "City is required",
+        "state": "State is required",
+        "country": "Country is required",
+        "lat": "Latitude is not valid",
+        "lng": "Longitude is not valid",
+        "name": "Name must be less than 50 characters",
+        "description": "Description is required",
+        "price": "Price per day is required"
+      }
     }
     ```
 
@@ -805,10 +788,10 @@ Create and return a new review for a spot specified by id.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "Review text is required",
-        "Stars must be an integer from 1 to 5",
-      ]
+      "errors": {
+        "review": "Review text is required",
+        "stars": "Stars must be an integer from 1 to 5",
+      }
     }
     ```
 
@@ -853,8 +836,7 @@ Create and return a new image for a review specified by id.
 
     ```json
     {
-      "url": "image url",
-      "previewImage": true
+      "url": "image url"
     }
     ```
 
@@ -867,8 +849,7 @@ Create and return a new image for a review specified by id.
     ```json
     {
       "id": 1,
-      "url": "image url",
-      "previewImage": true
+      "url": "image url"
     }
     ```
 
@@ -947,10 +928,10 @@ Update and return an existing review.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "Review text is required and must be under 255 characters.",
-        "Stars must be an integer from 1 to 5",
-      ]
+      "errors": {
+        "review": "Review text is required",
+        "stars": "Stars must be an integer from 1 to 5",
+      }
     }
     ```
 
@@ -1127,7 +1108,7 @@ Create and return a new booking from a spot specified by id.
 * Require proper authorization: Spot must NOT belong to the current user
 * Request
   * Method: POST
-  * URL: /api/spots/:spotIdForBooking/bookings
+  * URL: /api/spots/:spotId/bookings
   * Body:
 
     ```json
@@ -1165,9 +1146,9 @@ Create and return a new booking from a spot specified by id.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "endDate cannot be on or before startDate"
-      ]
+      "errors": {
+        "endDate": "endDate cannot be on or before startDate"
+      }
     }
     ```
 
@@ -1194,10 +1175,10 @@ Create and return a new booking from a spot specified by id.
     {
       "message": "Sorry, this spot is already booked for the specified dates",
       "statusCode": 403,
-      "errors": [
-        "Start date conflicts with an existing booking",
-        "End date conflicts with an existing booking"
-      ]
+      "errors": {
+        "startDate": "Start date conflicts with an existing booking",
+        "endDate": "End date conflicts with an existing booking"
+      }
     }
     ```
 
@@ -1249,9 +1230,9 @@ Update and return an existing booking.
     {
       "message": "Validation error",
       "statusCode": 400,
-      "errors": [
-        "endDate cannot come before startDate"
-      ]
+      "errors": {
+        "endDate": "endDate cannot come before startDate"
+      }
     }
     ```
 
@@ -1291,10 +1272,10 @@ Update and return an existing booking.
     {
       "message": "Sorry, this spot is already booked for the specified dates",
       "statusCode": 403,
-      "errors": [
-        "Start date conflicts with an existing booking",
-        "End date conflicts with an existing booking"
-      ]
+      "errors": {
+        "startDate": "Start date conflicts with an existing booking",
+        "endDate": "End date conflicts with an existing booking"
+      }
     }
     ```
 
@@ -1359,7 +1340,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/spots/images/:spotImageId
+  * URL: /api/spot-images/:imageId
   * Body: none
 
 * Successful Response
@@ -1396,7 +1377,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /api/images/:reviewImageId
+  * URL: /api/review-images/:imageId
   * Body: none
 
 * Successful Response
@@ -1434,8 +1415,8 @@ Return spots filtered by query parameters.
   * Method: GET
   * URL: /api/spots
   * Query Parameters
-    * page: integer, minimum: 0, maximum: 10, default: 1
-    * size: integer, minimum: 0, maximum: 20, default: 20
+    * page: integer, minimum: 1, maximum: 10, default: 1
+    * size: integer, minimum: 1, maximum: 20, default: 20
     * minLat: decimal, optional
     * maxLat: decimal, optional
     * minLng: decimal, optional
@@ -1467,6 +1448,7 @@ Return spots filtered by query parameters.
           "price": 123,
           "createdAt": "2021-11-19 20:39:36",
           "updatedAt": "2021-11-19 20:39:36",
+          "avgRating": 4.5,
           "previewImage": "image url"
         }
       ],
@@ -1485,15 +1467,15 @@ Return spots filtered by query parameters.
     {
       "message": "Validation Error",
       "statusCode": 400,
-      "errors": [
-        "Page must be between 0 and 10",
-        "Size must be greater than or equal to 0",
-        "Maximum latitude is invalid",
-        "Minimum latitude is invalid",
-        "Maximum longitude is invalid",
-        "Minimum longitude is invalid",
-        "Maximum price must be a number greater than or equal to 0",
-        "Minimum price must be a number greater than or equal to 0"
-      ]
+      "errors": {
+        "page": "Page must be greater than or equal to 1",
+        "size": "Size must be greater than or equal to 1",
+        "maxLat": "Maximum latitude is invalid",
+        "minLat": "Minimum latitude is invalid",
+        "minLng": "Maximum longitude is invalid",
+        "maxLng": "Minimum longitude is invalid",
+        "minPrice": "Maximum price must be greater than or equal to 0",
+        "maxPrice": "Minimum price must be greater than or equal to 0"
+      }
     }
     ```
