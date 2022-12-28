@@ -44,9 +44,7 @@ router.post('/', validateSignup, async (req, res) => {
 
   user.dataValues.token = req.headers['xsrf-token'];
 
-  return res.json({
-    user: user
-  });
+  return res.json(user);
 })
 
 
