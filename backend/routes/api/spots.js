@@ -282,7 +282,7 @@ router.post('/', async (req, res) => {
     description,
     price,
   });
-  
+
   delete newSpot.dataValues.previewImage;
 
   return res.json(newSpot);
@@ -558,7 +558,7 @@ router.get('/:id/reviews', async (req, res) => {
       },
       {
         model: ReviewImage,
-        attributes: {exclude: ['createdAt', 'updatedAt', 'previewImage', 'reviewId']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'reviewId']}
       }
     ]
   });

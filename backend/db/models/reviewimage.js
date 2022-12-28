@@ -25,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    previewImage: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
   }, {
     sequelize,
     modelName: 'ReviewImage',

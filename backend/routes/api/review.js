@@ -61,12 +61,11 @@ router.post('/:id/images', async (req, res) => {
     );
   }
 
-  const { url, previewImage } = req.body;
+  const { url } = req.body;
 
   const newImage = await ReviewImage.create({
     reviewId,
     url,
-    previewImage,
   });
 
   delete newImage.dataValues.createdAt;
@@ -106,7 +105,7 @@ router.get('/current', async (req, res) => {
       },
       {
         model: ReviewImage,
-        attributes: {exclude: ['createdAt', 'updatedAt', 'previewImage', 'reviewId']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'reviewId']}
       }
     ]
   });
