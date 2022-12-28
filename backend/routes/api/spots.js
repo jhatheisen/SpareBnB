@@ -282,9 +282,8 @@ router.post('/', async (req, res) => {
     description,
     price,
   });
-
-  delete newSpot.dataValues.createdAt;
-  delete newSpot.dataValues.updatedAt;
+  
+  delete newSpot.dataValues.previewImage;
 
   return res.json(newSpot);
 });
