@@ -66,6 +66,10 @@ async function getAvgRating(id) {
     }
   });
 
+  if (reviews.length === 0) {
+    return 'No Reviews yet.'
+  }
+
   let stars = 0;
   let count = 0;
 
@@ -352,7 +356,7 @@ router.post('/:id/images', async (req, res) => {
   const newImg = await SpotImage.create({
     spotId,
     url,
-    preview: preview || previewImage,
+    preview: preview,
   });
 
   delete newImg.dataValues.createdAt;
