@@ -8,11 +8,14 @@ const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
 
-function validateQuery(minLat, maxLat, minLng, maxLng, minPrice, maxPrice) {
+function validateQuery(page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice) {
 
   const filter = {};
 
   const errors = [];
+
+  if (page < 0 || page > 10) errors.push("Page must be between 1 and 10");
+  if (size < 0 || size > 20) errors.push("Size must be between 1 and 20");
 
   // min lat
   if (isNaN(minLat) && minLat) errors.push("Minimum latitude is invalid");
@@ -96,29 +99,13 @@ router.get('/', async (req, res) => {
   (!page || isNaN(page)) ? page = 1 : page = parseInt(page);
   (!size || isNaN(size)) ? size = 20 : size = parseInt(size);
 
-  const errors = [];
-
-  if (page < 0 || page > 10) errors.push("Page must be between 0 and 10");
-  if (page < 0 || page > 20) errors.push("Size must be between 0 and 20");
-
-  // if errors exist
-  if (errors.length) {
-    res.status(400);
-    return res.json({
-      message: "Validation Error",
-      statusCode: 400,
-      errors
-    });
-  }
-
   const limit = size;
   const offset = (size * (page - 1));
 
   // other query
   const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
-  let validation = validateQuery(minLat, maxLat, minLng, maxLng, minPrice, maxPrice);
-
+  let validation = validateQuery(page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice);
 
   if (Array.isArray(validation)) {
     res.status(400);
@@ -238,11 +225,7 @@ router.get('/:id', async (req, res) => {
     spotById.dataValues.avgStarRating = avgStarRating;
   }
 
-  return res.json(
-    {
-      Spots: spotById
-    }
-  )
+  return res.json(spotById);
 });
 
 // validate spot
@@ -304,10 +287,7 @@ router.post('/', async (req, res) => {
     price,
   });
 
-  delete newSpot.dataValues.createdAt;
-  delete newSpot.dataValues.updatedAt;
-  delete newSpot.dataValues.id;
-  delete newSpot.dataValues.ownerId;
+  delete newSpot.dataValues.previewImage;
 
   return res.json(newSpot);
 });
@@ -494,7 +474,7 @@ router.post('/:id/reviews', async (req, res) => {
     );
   }
 
-  const spotId = req.params.id;
+  const spotId = Number(req.params.id);
   const spot = await Spot.findByPk(spotId);
 
   // doesn't exist
@@ -577,10 +557,12 @@ router.get('/:id/reviews', async (req, res) => {
       spotId: req.params.id
     },
     include: [
-      { model: User },
+      { model: User,
+        attributes: { exclude: ['username', 'createdAt', 'updatedAt', 'hashedPassword', 'email'] }
+      },
       {
         model: ReviewImage,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'reviewId']}
       }
     ]
   });
@@ -753,60 +735,6 @@ router.get('/:id/bookings', async (req, res) => {
     return res.json({Bookings: bookings});
   }
 
-});
-
-// delete spot image by spot image id
-router.delete('/images/:id', async (req, res) => {
-
-  // 1. authenticate
-  if (req.user === null) {
-    res.status(401);
-    return res.json(
-      {
-        message: "Authentication required",
-        statusCode: 401
-      }
-    );
-  }
-
-  // 2. check if Spot Image exists
-
-  const spotImageId = req.params.id;
-  const targetImage = await SpotImage.findByPk(spotImageId);
-
-  // cannot find spot image
-  if (!targetImage) {
-    res.status(404);
-    return res.json({
-      message: "Spot Image couldn't be found",
-      statusCode: 404
-    });
-  }
-
-  const spotId = targetImage.dataValues.spotId;
-
-  const spot = await Spot.findByPk(spotId);
-
-  const ownerId = spot.dataValues.ownerId;
-
-  const userId = req.user.id;
-
-  if (ownerId !== userId) {
-    res.status(403);
-    return res.json(
-      {
-        message: "Forbidden, cannot delete other people's Spot Images",
-        statusCode: 403
-      }
-    );
-  }
-
-  await targetImage.destroy();
-
-  return res.json({
-    message: "Successfully deleted",
-    statusCode: 200
-  });
 });
 
 module.exports = router;

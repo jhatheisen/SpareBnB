@@ -14,42 +14,34 @@ module.exports = {
       {
         reviewId: 1,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 2,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 3,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 4,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 5,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 5,
         url: 'image url',
-        previewImage: false,
       },
       {
         reviewId: 6,
         url: 'image url',
-        previewImage: true,
       },
       {
         reviewId: 6,
         url: 'image url',
-        previewImage: false,
       },
     ]);
   },
