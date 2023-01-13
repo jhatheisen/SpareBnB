@@ -1,7 +1,7 @@
 # SpareBnB
 
 ## Live Website
-https://airbnb-clone-psrr.onrender.com/api/csrf/restore
+https://sparebnb.onrender.com/api/csrf/restore
 
 ## Summary
 
