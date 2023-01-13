@@ -9,37 +9,49 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    options.tableName = 'SpotImages'
+    options.tableName = 'ReviewImages'
     await queryInterface.bulkInsert(options, [
       {
-        spotId: 1,
+        reviewId: 1,
         url: 'image url',
-        preview: true,
       },
       {
-        spotId: 1,
+        reviewId: 2,
         url: 'image url',
-        preview: true,
       },
       {
-        spotId: 2,
+        reviewId: 3,
         url: 'image url',
-        preview: true,
+      },
+      {
+        reviewId: 4,
+        url: 'image url',
+      },
+      {
+        reviewId: 5,
+        url: 'image url',
+      },
+      {
+        reviewId: 5,
+        url: 'image url',
+      },
+      {
+        reviewId: 6,
+        url: 'image url',
+      },
+      {
+        reviewId: 6,
+        url: 'image url',
       },
     ]);
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-    options.tableName = 'SpotImages';
+
+    options.tableName = 'ReviewImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1,2,3] }
+      id: { [Op.in]: [1,2,3,4,5,6,7,8] }
     }, {});
   }
 };

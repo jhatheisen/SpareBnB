@@ -7,7 +7,8 @@ const { Review, ReviewImage, User, Spot } = require('../../db/models');
 
 // create an image for a review by review id
 router.post('/:id/images', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -60,16 +61,16 @@ router.post('/:id/images', async (req, res) => {
     );
   }
 
-  const { url, previewImage } = req.body;
+  const { url } = req.body;
 
   const newImage = await ReviewImage.create({
     reviewId,
     url,
-    previewImage,
   });
 
   delete newImage.dataValues.createdAt;
   delete newImage.dataValues.updatedAt;
+  delete newImage.dataValues.reviewId;
 
   return res.json(newImage);
 
@@ -77,7 +78,8 @@ router.post('/:id/images', async (req, res) => {
 
 // get all reviews for current user
 router.get('/current', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -94,14 +96,16 @@ router.get('/current', async (req, res) => {
       userId: req.user.id
     },
     include: [
-      { model: User },
+      { model: User,
+        attributes: { exclude: ['username', 'createdAt', 'updatedAt', 'hashedPassword', 'email'] }
+      },
       {
         model: Spot,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'description']}
       },
       {
         model: ReviewImage,
-        attributes: {exclude: ['createdAt', 'updatedAt']}
+        attributes: {exclude: ['createdAt', 'updatedAt', 'reviewId']}
       }
     ]
   });
@@ -111,7 +115,8 @@ router.get('/current', async (req, res) => {
 
 // edit review by review id
 router.put('/:id', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
@@ -176,7 +181,8 @@ router.put('/:id', async (req, res) => {
 
 // delete review by id
 router.delete('/:id', async (req, res) => {
-  // authenticate
+
+  // authentication 401
   if (req.user === null) {
     res.status(401);
     return res.json(
