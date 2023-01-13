@@ -1,4 +1,4 @@
-# AirBnB Clone
+# SpareBnB
 
 ## Live Website
 https://airbnb-clone-psrr.onrender.com/api/csrf/restore
