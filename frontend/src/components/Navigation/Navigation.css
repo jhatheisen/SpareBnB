@@ -1,0 +1,35 @@
+ul {
+  list-style-type: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* border: solid green; */
+  height: 100px;
+}
+
+li {
+  /* border: solid black; */
+  padding: 10px;
+}
+
+a:link {
+  text-decoration: none;
+  font-size: x-large;
+  border: solid blue;
+  padding: 3px;
+}
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
+
+.hidden {
+  display: none;
+}
+
+.userProfile {
+  font-size: 50px;
+  float: right;
+}
