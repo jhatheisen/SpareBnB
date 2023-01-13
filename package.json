@@ -1,5 +1,5 @@
 {
-  "name": "airbnb",
+  "name": "sparebnb",
   "version": "1.0.0",
   "description": "## Database Schema Design",
   "main": "index.js",
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jhatheisen/AirBnB.git"
+    "url": "git+https://github.com/jhatheisen/SpareBnB.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jhatheisen/AirBnB/issues"
+    "url": "https://github.com/jhatheisen/SpareBnB/issues"
   },
-  "homepage": "https://github.com/jhatheisen/AirBnB#readme"
+  "homepage": "https://github.com/jhatheisen/SpareBnB#readme"
 }

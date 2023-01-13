@@ -59,7 +59,7 @@ To access the database directly use the command **"sqlite3 directory/databaseFil
 
 ## Database Schema Design
 
-![Schema](/assets/airbnbSchema.png)
+![Schema](/assets/sparebnbSchema.png)
 
 ## API Documentation
 
