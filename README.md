@@ -2,8 +2,12 @@
 
 ## Database Schema Design
 
+<<<<<<< Updated upstream
 ![Schema](airbnbSchema.png)
 
+=======
+![Schema](/assets/sparebnbSchema.png)
+>>>>>>> Stashed changes
 
 ## API Documentation
 
