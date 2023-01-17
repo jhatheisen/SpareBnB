@@ -1,23 +1,18 @@
 import React, { useState } from "react";
 import * as sessionActions from '../../store/session';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from "react-router-dom";
+import { useModal } from "../../context/Modal";
 import './LoginForm.css';
 
-function LoginFormPage() {
+function LoginFormModal() {
   // create dispatch
   const dispatch = useDispatch();
   //grab curr user if one exists
-  const sessionUser = useSelector(state => state.session.user);
   // create state vars
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
-
-  // if already logged, redirect home
-  if (sessionUser) return (
-    <Redirect to='/'/>
-  )
+  const { closeModal } = useModal();
 
   // when submit, dispatch login thunk action
   const handleSubmit = (e) => {
@@ -25,6 +20,7 @@ function LoginFormPage() {
     setErrors([]);
     return dispatch(sessionActions.login({credential, password}))
     // if error, set errors
+    .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
@@ -59,4 +55,4 @@ function LoginFormPage() {
   );
 }
 
-export default LoginFormPage;
+export default LoginFormModal;
