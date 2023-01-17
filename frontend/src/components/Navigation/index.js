@@ -10,40 +10,16 @@ import SignupFormModal from "../SignupFormModal";
 function Navigation({isLoaded}) {
   const sessionUser = useSelector(state => state.session.user);
 
-  let sessionLinks;
-  if (sessionUser) {
-    sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
-    );
-  } else {
-    sessionLinks =(
-    <>
-      <div>
-        <li>
-          <OpenModalButton
-            buttonText="Log in"
-            modalComponent={<LoginFormModal />}
-          />
-        </li>
-        <li>
-          <OpenModalButton
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal />}
-          />
-        </li>
-      </div>
-    </>
-    );
-  }
-
   return (
     <ul>
       <li>
         <NavLink exact to='/'>Home</NavLink>
       </li>
-      {isLoaded && sessionLinks}
+      {isLoaded && (
+        <li>
+          <ProfileButton user={sessionUser} />
+        </li>
+      )}
     </ul>
   );
 }
