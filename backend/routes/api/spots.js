@@ -81,7 +81,9 @@ async function getAvgRating(id) {
     count++;
   }
 
-  const avgRating = stars / count;
+  let avgRating = stars / count;
+
+  avgRating = avgRating.toFixed(2);
 
   if (isNaN(avgRating)) {
     return -1;
