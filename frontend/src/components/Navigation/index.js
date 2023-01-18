@@ -10,10 +10,11 @@ function Navigation({isLoaded}) {
   return (
     <ul>
       <li>
-        <NavLink exact to='/'><i className="fa-solid fa-house"></i></NavLink>
+        <NavLink exact to='/'><i className="fa-2xl logo fa-solid fa-house-chimney-user"></i></NavLink>
       </li>
+      <h2>SpareBnB</h2>
       {isLoaded && (
-        <li>
+        <li className="profileDropDown">
           <ProfileButton user={sessionUser} />
         </li>
       )}

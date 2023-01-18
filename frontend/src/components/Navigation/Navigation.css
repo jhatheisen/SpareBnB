@@ -8,6 +8,20 @@ ul {
   justify-content: space-between;
   /* border: solid green; */
   height: 100px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+h2 {
+  color: purple;
+  position: absolute;
+  left: 45%;
+}
+
+.logo{
+  color: purple;
 }
 
 li {
@@ -18,7 +32,7 @@ li {
 a:link {
   text-decoration: none;
   font-size: x-large;
-  border: solid blue;
+  /* border: solid blue; */
   padding: 3px;
 }
 a:visited { text-decoration: none; }
@@ -32,4 +46,14 @@ a:active { text-decoration: none; }
 .userProfile {
   font-size: 50px;
   float: right;
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  color: pu;
+}
+
+.profileDropDown {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }

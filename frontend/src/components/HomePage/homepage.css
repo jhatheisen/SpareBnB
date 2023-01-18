@@ -1,0 +1,50 @@
+* {
+  font-family: 'Sofia Sans', sans-serif;
+}
+
+.homepageContentDiv {
+  /* background-color: aqua; */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.spotCard {
+  /* border:  solid green; */
+  height: 400px;
+  width: 300px;
+  box-shadow: 0px 0px 10px rgb(187, 183, 183);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
+.spotImage {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 7%;
+}
+
+.spotText {
+  /* background-color: yellow; */
+  height: 150px;
+  width: 280px;
+  flex-direction: column;
+}
+
+.loadMoreButton {
+  background-color: rgba(207, 199, 199, 0.623);
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
