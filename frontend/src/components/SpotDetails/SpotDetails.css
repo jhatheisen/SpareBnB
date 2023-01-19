@@ -46,6 +46,7 @@
 
 .detailsContainer {
   /* background-color: gray; */
+  max-width: 65%;
   flex-direction: column;
 }
 
@@ -58,4 +59,37 @@ hr {
   height: 1px;
   /* Set the hr color */
   background-color: rgb(218, 206, 206); /* Modern Browsers */
+}
+
+.bookingContainer {
+  box-shadow: 0px 0px 10px rgb(197, 187, 187);
+  border: solid antiquewhite;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: white;
+}
+
+.bookingContainer h2 {
+  margin: 20px 0px 0px 20px;
+}
+
+.bookingDetails {
+  /* background-color: bisque; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 0px 20px 20px;
+}
+
+.bookingDetails * {
+  margin: 0;
+}
+
+.notBold {
+  font-weight: normal;
 }

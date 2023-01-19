@@ -50,11 +50,14 @@ function SpotDetails() {
           <hr/>
         </div>
 
+
         <div className="bookingContainer">
-          <h2>${price} night</h2>
-          <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
-          <span>&#183;</span>
-          <p><u>{numReviews} reviews</u></p>
+          <h2>${price} <span className='notBold'>per night</span></h2>
+          <div className="bookingDetails">
+            <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
+            <span>&#183;</span>
+            <p><u>{numReviews} reviews</u></p>
+          </div>
         </div>
 
       </div>
