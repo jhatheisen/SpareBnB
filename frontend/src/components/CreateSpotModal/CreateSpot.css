@@ -1,4 +1,4 @@
-.loginModal {
+.createSpotModal {
   /* background-color: aqua; */
   /* border: solid black; */
   display: flex;
@@ -7,14 +7,15 @@
   gap: 5px;
 }
 
-.loginErrors {
+.createSpotErrors {
   /* background-color: aquamarine; */
   /* position: fixed; */
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
+  margin-top: 20px;
+  height: fit-content;
 }
 
-.loginContainer {
+.createSpotContainer {
   width: 400px;
 }

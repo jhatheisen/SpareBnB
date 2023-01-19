@@ -48,6 +48,14 @@ export const showDetailSpot = (spotId) => async (dispatch) => {
   return response;
 }
 
+export const createSpot = (spot) => async (dispatch) => {
+  const response = await csrfFetch('/api/spots', {
+    method: "POST",
+    body: JSON.stringify(spot)
+  });
+  return response;
+}
+
 const spotsReducer = ( state = {}, action) => {
   let newState;
   switch (action.type) {

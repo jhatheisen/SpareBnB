@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { showDetailSpot } from "../../store/spots";
 import './SpotDetails.css';
+import MapContainer from '../Maps/index';
 
 function SpotDetails() {
 
@@ -13,18 +14,22 @@ function SpotDetails() {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const detailedSpot = useSelector(state => state.spots.detailSpot);
+  const user = useSelector(state => state.session.user);
 
-  if (!detailedSpot) return null;
+  if (!detailedSpot || !user) return null;
 
-  const {name, avgStarRating, numReviews, city, state, country, SpotImages, Owner, description, price} = detailedSpot;
+  const ownedSpot = detailedSpot.ownerId == user.id;
 
-  console.log(detailedSpot)
+  const {name, avgStarRating, numReviews, city, state, country, SpotImages, Owner, description, price, lat, lng} = detailedSpot;
 
   return (
     <div className="outsideContainer">
       <div className="spotContainer">
 
         <h1 className="spotName">{name}</h1>
+          {ownedSpot &&
+            <button className="editButton">Edit</button>
+          }
         <div className="titleBar">
           <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
           <span>&#183;</span>
@@ -40,7 +45,7 @@ function SpotDetails() {
                 <img src={image.url} alt={name} className="previewImages"/>
                 );
               })
-            }
+          }
           {/* <button>Show more ...</button> */}
         </div>
 
@@ -48,6 +53,7 @@ function SpotDetails() {
           <h2>Home hosted by {Owner.firstName} <i className="ownerProfile fa-xl fa-solid fa-circle-user" /></h2>
           <p>{description}</p>
           <hr/>
+          <MapContainer center={{lat, lng}}/>
         </div>
 
 

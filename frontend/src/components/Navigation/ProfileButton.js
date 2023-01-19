@@ -4,6 +4,7 @@ import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenuItem.js";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import CreateSpotModal from "../CreateSpotModal";
 
 function ProfileButton({user}) {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ function ProfileButton({user}) {
     };
 
     document.addEventListener('click', closeMenu);
-    console.log(showMenu)
+
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
@@ -37,6 +38,8 @@ function ProfileButton({user}) {
     dispatch(sessionActions.logout());
     closeMenu();
   };
+
+
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -52,6 +55,14 @@ function ProfileButton({user}) {
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
+              <OpenModalMenuItem
+                  itemText="Create A Spot"
+                  modalComponent={<CreateSpotModal />}
+                  onItemClick={closeMenu}
+                  id='createSpot'
+                />
+            </li>
+            <li>
               <button onClick={logout}>Log Out</button>
             </li>
           </>
@@ -62,6 +73,7 @@ function ProfileButton({user}) {
                 itemText="Log In"
                 modalComponent={<LoginFormModal />}
                 onItemClick={closeMenu}
+                id='login'
               />
             </li>
             <li>
@@ -69,6 +81,7 @@ function ProfileButton({user}) {
                 itemText="Sign Up"
                 modalComponent={<SignupFormModal />}
                 onItemClick={closeMenu}
+                id='signup'
               />
             </li>
           </>

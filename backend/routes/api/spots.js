@@ -267,7 +267,7 @@ router.post('/', async (req, res) => {
     );
   }
 
-  const {address, city, state, country, lat, lng, name, description, price} = req.body;
+  const {address, city, state, country, lat, lng, name, description, price, previewImage} = req.body;
 
   const error = validateSpot(address, city, state, country, lat, lng, name, description, price);
 
@@ -287,7 +287,16 @@ router.post('/', async (req, res) => {
     name,
     description,
     price,
+    previewImage
   });
+
+  if (previewImage) {
+    await SpotImage.create({
+      spotId: newSpot.id,
+      url: previewImage,
+      preview: true,
+    });
+  }
 
   delete newSpot.dataValues.previewImage;
 
