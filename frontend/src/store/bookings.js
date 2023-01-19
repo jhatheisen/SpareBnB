@@ -24,6 +24,13 @@ export const createBooking = (booking, spotId) => async (dispatch) => {
   return response;
 }
 
+export const deleteBooking = (bookingId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/bookings/${bookingId}`, {
+    method: 'DELETE'
+  });
+  return response;
+}
+
 const bookingsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {

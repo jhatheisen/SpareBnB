@@ -32,7 +32,21 @@ function SpotDetails() {
     ownedSpot = detailedSpot.ownerId == user.id;
   }
 
-  const {name, avgStarRating, numReviews, city, state, country, SpotImages, Owner, description, price, lat, lng} = detailedSpot;
+  const {
+    name,
+    avgStarRating,
+    numReviews,
+    city,
+    state,
+    country,
+    SpotImages,
+    Owner,
+    description,
+    price,
+    lat,
+    lng,
+    address
+  } = detailedSpot;
 
   const handleEdit = () => {
     history.push(`/spots/edit/${spotId}`);
@@ -61,7 +75,7 @@ function SpotDetails() {
   }
 
   const handleDelete = () => {
-    const deleting = window.confirm("Are you sure about that?");
+    const deleting = window.confirm("Are you sure you want to delete this spot?");
     if (deleting) {
       dispatch(spotsActions.deleteSpot(spotId));
       history.push('/');
@@ -86,6 +100,8 @@ function SpotDetails() {
           <p><u>{numReviews} reviews</u></p>
           <span>&#183;</span>
           <p><u>{city}, {state}, {country}</u></p>
+          <span>&#183;</span>
+          <p>{address}</p>
         </div>
 
         <div className="imageContainer">
