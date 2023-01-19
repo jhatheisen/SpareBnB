@@ -14,7 +14,7 @@ function Navigation({isLoaded}) {
       </li>
       <h2 className="logoText">SpareBnB</h2>
       {isLoaded && (
-        <li className="profile-dropdown">
+        <li >
           <ProfileButton user={sessionUser} />
         </li>
       )}

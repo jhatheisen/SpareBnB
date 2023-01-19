@@ -93,3 +93,8 @@ hr {
 .notBold {
   font-weight: normal;
 }
+
+.editButton {
+  width: 100px;
+  height: 100px;
+}
