@@ -25,7 +25,7 @@ function ProfileButton({user}) {
     };
 
     document.addEventListener('click', closeMenu);
-    console.log(showMenu)
+
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);

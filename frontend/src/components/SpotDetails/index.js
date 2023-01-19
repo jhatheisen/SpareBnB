@@ -18,7 +18,6 @@ function SpotDetails() {
 
   const {name, avgStarRating, numReviews, city, state, country, SpotImages, Owner, description, price} = detailedSpot;
 
-  console.log(detailedSpot)
 
   return (
     <div className="outsideContainer">
