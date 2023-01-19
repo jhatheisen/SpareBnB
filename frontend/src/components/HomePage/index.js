@@ -16,7 +16,7 @@ function HomePage() {
   }, []);
 
   // console.log(spots.Spots);
-  // if (!spots.Spots.length) return null;
+  if (!spots.Spots) return null;
 
   return (
     <>
@@ -29,7 +29,6 @@ function HomePage() {
             if (description.length > charLimit) description = description.substring(0, charLimit) + ' . . .';
 
             const onClick = () => {
-              console.log('clicked');
               history.push(`/spots/${spot.id}`)
             }
 
