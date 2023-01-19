@@ -1,0 +1,10 @@
+.bookingCard {
+  /* background-color: aqua; */
+  border: solid black;
+  padding: 10px;
+}
+.bookingsContainer {
+  /* background-color: yellowgreen; */
+  display: flex;
+  gap: 10px;
+}

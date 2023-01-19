@@ -12,6 +12,7 @@ import configureStore from './store';
 import { csrfFetch, restoreCSRF } from './store/csrf';
 import * as sessionActions from './store/session';
 import * as spotsActions from './store/spots';
+import * as bookingActions from './store/bookings';
 
 const store = configureStore();
 
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
   window.store = store;
   window.sessionActions = sessionActions;
   window.spotsActions = spotsActions;
+  window.bookingActions = bookingActions;
 }
 
 // Wrap the application with the Modal provider and render the Modal component

@@ -5,11 +5,13 @@ import OpenModalMenuItem from "./OpenModalMenuItem.js";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import CreateSpotModal from "../CreateSpotModal";
+import { useHistory } from "react-router-dom";
 
 function ProfileButton({user}) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const history = useHistory();
 
   const openMenu = () => {
     if (showMenu) return;
@@ -40,6 +42,10 @@ function ProfileButton({user}) {
     window.alert("Logout Successful")
   };
 
+  const redirectBookings = (e) => {
+    history.push('/user/bookings');
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -60,6 +66,9 @@ function ProfileButton({user}) {
                   onItemClick={closeMenu}
                   id='createSpot'
                 />
+            </li>
+            <li>
+              <button onClick={redirectBookings}>Check Bookings</button>
             </li>
             <li>
               <button onClick={logout}>Log Out</button>
