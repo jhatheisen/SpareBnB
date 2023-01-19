@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { showDetailSpot } from "../../store/spots";
 import './SpotDetails.css';
 import MapContainer from '../Maps/index';
 import * as spotsActions from '../../store/spots';
+import * as bookingActions from '../../store/bookings';
 
 function SpotDetails() {
 
@@ -15,8 +16,14 @@ function SpotDetails() {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+
   const detailedSpot = useSelector(state => state.spots.detailSpot);
   const user = useSelector(state => state.session.user);
+
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [errors, setErrors] = useState([]);
+
   let ownedSpot = null;
 
   if (!detailedSpot) return null;
@@ -31,6 +38,28 @@ function SpotDetails() {
     history.push(`/spots/edit/${spotId}`);
   }
 
+  const handleBook = async (e) => {
+    e.preventDefault();
+    setErrors([]);
+
+    const newBooking = {
+      startDate,
+      endDate
+    }
+
+    try {
+      const createBookingResponse = await dispatch(bookingActions.createBooking(newBooking, spotId));
+      if (await createBookingResponse.ok) {
+        window.alert('Booking Created');
+        history.push('/user/bookings');
+      }
+    } catch (e) {
+      const data = await e.json()
+      if (data && data.errors) setErrors(data.errors)
+    }
+
+  }
+
   const handleDelete = () => {
     const deleting = window.confirm("Are you sure about that?");
     if (deleting) {
@@ -38,6 +67,7 @@ function SpotDetails() {
       history.push('/');
     }
   }
+
 
   return (
     <div className="outsideContainer">
@@ -84,6 +114,37 @@ function SpotDetails() {
             <span>&#183;</span>
             <p><u>{numReviews} reviews</u></p>
           </div>
+          {
+            !ownedSpot &&
+              (<div className="createBookingContainer">
+                <form onSubmit={handleBook}>
+                    <label for='startDate'>
+                      Start Date
+                    </label>
+                    <input
+                    type='date'
+                    id='startDate'
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    required
+                    />
+                    <label for='endDate'>
+                      End Date
+                    </label>
+                    <input
+                    type='date'
+                    id='endDate'
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    required
+                    />
+                    <button type="submit">BOOK</button>
+                  </form>
+                  <ul className="createBookingErrors">
+                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                  </ul>
+              </div>)
+          }
         </div>
 
       </div>
