@@ -44,10 +44,6 @@ a:visited { text-decoration: none; }
 a:hover { text-decoration: none; }
 a:active { text-decoration: none; }
 
-.hidden {
-  display: none;
-}
-
 .userProfile {
   font-size: 50px;
   float: right;
@@ -60,4 +56,8 @@ a:active { text-decoration: none; }
   display: flex;
   flex-direction: row-reverse;
   height: 80px;
+}
+
+.hidden {
+  display: none;
 }
