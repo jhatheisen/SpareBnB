@@ -30,6 +30,15 @@ function SpotDetails() {
     history.push(`/spots/edit/${spotId}`);
   }
 
+  const handleDelete = () => {
+    const deleting = window.confirm("Are you sure about that?");
+    if (deleting) {
+      console.log('deleting');
+      history.push('/');
+      window.alert('Delete Successfull');
+    }
+  }
+
   return (
     <div className="outsideContainer">
       <div className="spotContainer">
@@ -37,6 +46,9 @@ function SpotDetails() {
         <h1 className="spotName">{name}</h1>
           {ownedSpot &&
             <button className="editButton" onClick={handleEdit}>Edit</button>
+          }
+          {ownedSpot &&
+            <button className="deleteButton" onClick={handleDelete}>Delete</button>
           }
         <div className="titleBar">
           <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>

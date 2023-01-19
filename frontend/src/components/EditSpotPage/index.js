@@ -44,11 +44,21 @@ function EditSpotPage() {
       previewImage
     }
 
-    return dispatch(spotsActions.editSpot(editedSpot, spotId))
-      .catch( async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      });
+    try {
+      const editResponse = await dispatch(spotsActions.editSpot(editedSpot, spotId));
+      if (await editResponse.ok) {
+        history.goBack();
+      }
+    } catch (e) {
+      const data = await e.json()
+      if (data && data.errors) setErrors(data.errors)
+    }
+
+    // return dispatch(spotsActions.editSpot(editedSpot, spotId))
+    //   .catch( async (res) => {
+    //     const data = await res.json();
+    //     if (data && data.errors) setErrors(data.errors);
+    //   });
 
   }
 
