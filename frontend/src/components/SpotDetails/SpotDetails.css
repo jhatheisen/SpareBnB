@@ -59,6 +59,14 @@ hr {
   height: 1px;
   /* Set the hr color */
   background-color: rgb(218, 206, 206); /* Modern Browsers */
+  width:50%;
+  margin:20px 0px;
+}
+
+.reviewsInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .bookingContainer {
@@ -99,7 +107,7 @@ hr {
   height: 100px;
 }
 
-.createBookingErrors {
+.createBookingErrors, .createReviewErrors {
   display: flex;
   flex-direction: column;
   height: fit-content;

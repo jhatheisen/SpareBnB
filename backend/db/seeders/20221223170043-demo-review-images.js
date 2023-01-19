@@ -13,35 +13,35 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         reviewId: 1,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/2950003/pexels-photo-2950003.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 2,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 3,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/2079246/pexels-photo-2079246.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 4,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 5,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/731082/pexels-photo-731082.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 5,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 6,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
       {
         reviewId: 6,
-        url: 'image url',
+        url: 'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=400',
       },
     ]);
   },
