@@ -25,16 +25,16 @@ function UserBookings() {
         {
           bookings &&
           bookings.map(booking => {
-            let start = Date.parse(booking.startDate);
-            let end = Date.parse(booking.endDate);
-            start = new Date(start).toDateString();
-            end = new Date(end).toDateString();
+            const start = new Date(booking.startDate);
+            const end = new Date(booking.endDate);
+            start.setDate(start.getDate() + 1)
+            end.setDate(end.getDate() + 1)
             const { spotId }= booking;
             return (
               <div className='bookingCard'>
                 <button onClick={() => {directSpot(spotId)}}>View Spot</button>
-                <h4>Start: {start}</h4>
-                <h4>End: {end}</h4>
+                <h4>Start: {start.toDateString()}</h4>
+                <h4>End: {end.toDateString()}</h4>
               </div>
               )
             })

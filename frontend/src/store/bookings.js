@@ -16,6 +16,14 @@ export const loadUserBookings = () => async (dispatch) => {
   return response;
 }
 
+export const createBooking = (booking, spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+    method: "POST",
+    body: JSON.stringify(booking)
+  });
+  return response;
+}
+
 const bookingsReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
