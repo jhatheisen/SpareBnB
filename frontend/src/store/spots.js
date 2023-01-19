@@ -56,6 +56,14 @@ export const createSpot = (spot) => async (dispatch) => {
   return response;
 }
 
+export const editSpot = (spot, spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    body: JSON.stringify(spot)
+  });
+  return response;
+}
+
 const spotsReducer = ( state = {}, action) => {
   let newState;
   switch (action.type) {

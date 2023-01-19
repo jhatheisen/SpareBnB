@@ -1,33 +1,37 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { useModal } from "../../context/Modal";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import * as spotsActions from '../../store/spots';
-import './CreateSpot.css';
+import './EditSpot.css';
 
-function CreateSpotModal() {
+function EditSpotPage() {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const {spotId} = useParams();
+  let targetSpot = useSelector(state => state.spots.detailSpot);
 
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
+  useEffect(() => {
+    dispatch(spotsActions.showDetailSpot(spotId));
+  }, []);
+
+  const [address, setAddress] = useState(targetSpot.address);
+  const [city, setCity] = useState(targetSpot.city);
+  const [state, setState] = useState(targetSpot.state);
+  const [country, setCountry] = useState(targetSpot.country);
+  const [lat, setLat] = useState(targetSpot.lat);
+  const [lng, setLng] = useState(targetSpot.lng);
+  const [name, setName] = useState(targetSpot.name);
+  const [description, setDescription] = useState(targetSpot.description);
+  const [price, setPrice] = useState(targetSpot.price);
+  const [previewImage, setPreviewImage] = useState(targetSpot.previewImage);
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
 
-    const newSpot = {
+    const editedSpot = {
       address,
       city,
       state,
@@ -40,20 +44,18 @@ function CreateSpotModal() {
       previewImage
     }
 
-    dispatch(spotsActions.createSpot(newSpot))
-      .then(closeModal)
+    return dispatch(spotsActions.editSpot(editedSpot, spotId))
       .catch( async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
-      })
+      });
 
-    history.goBack();
   }
 
   return (
-    <div className="createSpotContainer">
-      <form onSubmit={handleSubmit} className="createSpotModal">
-        <h1>Create A Spot</h1>
+    <div className="editSpotContainer">
+      <form onSubmit={handleSubmit} className="editSpotPage">
+        <h1>Edit Spot</h1>
         <label for="address">
         Address
         </label>
@@ -62,7 +64,6 @@ function CreateSpotModal() {
           id="address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
           />
         <label for="city">
         City
@@ -72,7 +73,6 @@ function CreateSpotModal() {
           id="city"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          required
           />
         <label for="state">
         State
@@ -82,7 +82,6 @@ function CreateSpotModal() {
           id="state"
           value={state}
           onChange={(e) => setState(e.target.value)}
-          required
           />
         <label for="country">
         Country
@@ -92,7 +91,6 @@ function CreateSpotModal() {
           id="country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          required
           />
         <label for="lat">
         Latitude
@@ -102,7 +100,6 @@ function CreateSpotModal() {
           id="lat"
           value={lat}
           onChange={(e) => setLat(e.target.value)}
-          required
           />
         <label for="lng">
         Longitude
@@ -112,7 +109,6 @@ function CreateSpotModal() {
           id="lng"
           value={lng}
           onChange={(e) => setLng(e.target.value)}
-          required
           />
         <label for="name">
         Name
@@ -122,7 +118,6 @@ function CreateSpotModal() {
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           />
         <label for="description">
         Description
@@ -132,7 +127,6 @@ function CreateSpotModal() {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
           />
         <label for="price">
         Price
@@ -142,7 +136,6 @@ function CreateSpotModal() {
           id="price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          required
           />
         <label for="previewImage">
         Preview Image URL
@@ -152,16 +145,15 @@ function CreateSpotModal() {
           id="previewImage"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
-          required
           />
-        <button type="submit">Create</button>
+        <button type="submit">Update</button>
       </form>
 
-      <ul className="createSpotErrors">
+      <ul className="editSpotErrors">
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
       </ul>
     </div>
   );
 };
 
-export default CreateSpotModal;
+export default EditSpotPage;

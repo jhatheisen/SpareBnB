@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { showDetailSpot } from "../../store/spots";
 import './SpotDetails.css';
 import MapContainer from '../Maps/index';
@@ -13,14 +13,22 @@ function SpotDetails() {
 
   const { spotId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const detailedSpot = useSelector(state => state.spots.detailSpot);
   const user = useSelector(state => state.session.user);
+  let ownedSpot = null;
 
-  if (!detailedSpot || !user) return null;
+  if (!detailedSpot) return null;
 
-  const ownedSpot = detailedSpot.ownerId == user.id;
+  if (user) {
+    ownedSpot = detailedSpot.ownerId == user.id;
+  }
 
   const {name, avgStarRating, numReviews, city, state, country, SpotImages, Owner, description, price, lat, lng} = detailedSpot;
+
+  const handleEdit = () => {
+    history.push(`/spots/edit/${spotId}`);
+  }
 
   return (
     <div className="outsideContainer">
@@ -28,7 +36,7 @@ function SpotDetails() {
 
         <h1 className="spotName">{name}</h1>
           {ownedSpot &&
-            <button className="editButton">Edit</button>
+            <button className="editButton" onClick={handleEdit}>Edit</button>
           }
         <div className="titleBar">
           <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
