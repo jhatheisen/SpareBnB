@@ -64,6 +64,13 @@ export const editSpot = (spot, spotId) => async (dispatch) => {
   return response;
 }
 
+export const deleteSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE"
+  });
+  return response;
+}
+
 const spotsReducer = ( state = {}, action) => {
   let newState;
   switch (action.type) {
