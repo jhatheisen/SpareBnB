@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { showDetailSpot } from "../../store/spots";
 import './SpotDetails.css';
 import MapContainer from '../Maps/index';
+import * as spotsActions from '../../store/spots';
 
 function SpotDetails() {
 
@@ -33,9 +34,8 @@ function SpotDetails() {
   const handleDelete = () => {
     const deleting = window.confirm("Are you sure about that?");
     if (deleting) {
-      console.log('deleting');
+      dispatch(spotsActions.deleteSpot(spotId));
       history.push('/');
-      window.alert('Delete Successfull');
     }
   }
 
