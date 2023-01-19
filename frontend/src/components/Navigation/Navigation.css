@@ -17,6 +17,8 @@ ul {
 
 .navBar {
   box-shadow: 0px 10px 10px rgb(197, 187, 187);
+  position: sticky;
+  z-index: 1000
 }
 
 .logoText {
