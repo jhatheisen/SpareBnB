@@ -53,9 +53,21 @@ a:active { text-decoration: none; }
 }
 
 .profile-dropdown {
+  /* background-color: aqua; */
+  height: fit-content;
   display: flex;
-  flex-direction: row-reverse;
-  height: 80px;
+  flex-direction: column;
+  position: fixed;
+  top: 90px;
+  right: 8px;
+  z-index: -1;
+}
+
+.profile-dropdown button {
+  border: none;
+  background-color: white;
+  font-size: large;
+  cursor: pointer;
 }
 
 .hidden {

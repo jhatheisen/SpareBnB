@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import HomePage from './components/HomePage';
 import SpotDetails from './components/SpotDetails';
+import MapContainer from './components/Maps';
 
 function App() {
   const dispatch = useDispatch();

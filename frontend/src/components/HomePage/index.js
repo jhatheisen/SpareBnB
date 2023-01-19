@@ -15,7 +15,6 @@ function HomePage() {
     dispatch(loadSpots());
   }, []);
 
-  // console.log(spots.Spots);
   if (!spots.Spots) return null;
 
   return (
