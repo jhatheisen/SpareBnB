@@ -94,7 +94,7 @@ hr {
   font-weight: normal;
 }
 
-.editButton {
+.editButton, .deleteButton {
   width: 100px;
   height: 100px;
 }
