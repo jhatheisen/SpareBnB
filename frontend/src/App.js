@@ -8,6 +8,7 @@ import HomePage from './components/HomePage';
 import SpotDetails from './components/SpotDetails';
 import EditSpotPage from './components/EditSpotPage';
 import MapContainer from './components/Maps';
+import UserBookings from './components/UserBookings';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
           <Route exact path='/' component={HomePage}/>
           <Route path='/spots/edit/:spotId' component={EditSpotPage}/>
           <Route path='/spots/:spotId' component={SpotDetails}/>
+          <Route path='/user/bookings' component={UserBookings}/>
         </Switch>
       )}
     </>
