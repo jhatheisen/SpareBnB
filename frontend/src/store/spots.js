@@ -28,14 +28,14 @@ const detailSpot = (spot) => {
 }
 
 export const loadSpots = () => async (dispatch) => {
-  const response = await csrfFetch('/api/spots?page=1&size=5');
+  const response = await csrfFetch('/api/spots?page=1&size=10');
   const data = await response.json();
   dispatch(populateSpots(data));
   return response;
 }
 
 export const nextPageSpots = (pageNum) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots?page=${pageNum}&size=5`);
+  const response = await csrfFetch(`/api/spots?page=${pageNum}&size=10`);
   const data = await response.json();
   dispatch(addSpots(data));
   return response

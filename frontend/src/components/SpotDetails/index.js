@@ -41,14 +41,12 @@ function SpotDetails() {
   if (!detailedSpot) return null;
 
   if (user) ownedSpot = detailedSpot.ownerId == user.id;
+
   if (bookings) {
     bookings.forEach(booking => {
       const sameSpot = booking.spotId == spotId;
-      // console.log('same spot?: ',sameSpot);
       const bookingEndDate = new Date(booking.endDate);
       bookingEndDate.setDate(bookingEndDate.getDate() + 1);
-      // console.log('past booking?: ', bookingEndDate <= currDate);
-      // console.log('pastbooking?: ', sameSpot && bookingEndDate <= currDate);
       if (sameSpot && bookingEndDate <= currDate) pastbooking = true;
     })
   }
@@ -56,10 +54,11 @@ function SpotDetails() {
   if (reviews) {
     reviews.forEach(review => {
       const reviewOwner = review.userId;
-      if (reviewOwner == user.id) alreadyReviewed = true;
+      if (user) {
+        if (reviewOwner == user.id) alreadyReviewed = true;
+      }
     })
   }
-
 
   const {
     name,
@@ -128,7 +127,6 @@ function SpotDetails() {
     } catch (e) {
       const data = await e.json()
       if (data && data.message) setReviewErrors([data.errors] || [data.message])
-      console.log(data);
     }
 
   }
@@ -146,14 +144,15 @@ function SpotDetails() {
   return (
     <div className="outsideContainer">
       <div className="spotContainer">
-
-        <h1 className="spotName">{name}</h1>
-          {ownedSpot &&
-            <button className="editButton" onClick={handleEdit}>Edit</button>
-          }
-          {ownedSpot &&
-            <button className="deleteButton" onClick={handleDelete}>Delete</button>
-          }
+        <div className="titleContainer">
+          <h1 className="spotName">{name}</h1>
+            {ownedSpot &&
+              <button className="editButton" onClick={handleEdit}>Edit</button>
+            }
+            {ownedSpot &&
+              <button className="deleteButton" onClick={handleDelete}>Delete</button>
+            }
+        </div>
         <div className="titleBar">
           <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
           <span>&#183;</span>
@@ -181,95 +180,10 @@ function SpotDetails() {
         </div>
 
         <hr/>
-        <MapContainer center={{lat, lng}}/>
-        <hr/>
+        <div className="mapnbooking">
+          <MapContainer center={{lat, lng}}/>
 
-        <div className="reviewsContainer">
-
-
-
-          <h2>Reviews</h2>
-          <div className="reviewsInfo">
-            <h2><i className="fa-solid fa-star"></i>{avgStarRating}</h2>
-            <span>&#183;</span>
-            <h2><u>{numReviews} reviews</u></h2>
-          </div>
-
-          { pastbooking && !alreadyReviewed &&
-            <div>
-              <h2>Post A Review</h2>
-              <form onSubmit={handleCreateReview}>
-                <label for='review'>
-                  Review
-                </label>
-                <input
-                  type="text"
-                  id="review"
-                  value={review}
-                  onChange={(e) => setReview(e.target.value)}
-                  // required
-                />
-                <label for='stars'>
-                  <i className="fa-solid fa-star"></i>
-                  {stars}
-                </label>
-                <input
-                  type="range"
-                  id="stars"
-                  max={5}
-                  step={1}
-                  value={stars}
-                  onChange={(e) => setStars(e.target.value)}
-                  // required
-                />
-                <label for='reviewImage'>
-                  Image URL
-                </label>
-                <input
-                type='text'
-                id="reviewImage"
-                value={reviewImageURL}
-                onChange={(e) => setReviewImageURL(e.target.value)}
-                />
-                <button type="submit">Post</button>
-              </form>
-              <ul className="createReviewErrors">
-                    {reviewErrors.map((error, idx) => <li key={idx}>{error}</li>)}
-              </ul>
-            </div>
-          }
-
-          { reviews &&
-              reviews.map(review => {
-
-                const reviewImages = review.ReviewImages;
-                const uploadDate = new Date(review.createdAt);
-                uploadDate.setDate(uploadDate.getDate() + 1);
-                const reviewId = review.userId;
-                const userReview = reviewId == user.id;
-
-                return (
-                  <div>
-                    <p><i className="fa-solid fa-user" /> {review.User.firstName}</p>
-                    { userReview &&
-                        <button onClick={() => handleReviewDelete(review.id)}>Delete</button>
-                    }
-                    <p>{uploadDate.toDateString()}</p>
-                    <p>{review.review} <i className="fa-solid fa-star"></i>{review.stars}</p>
-                    { reviewImages &&
-                      reviewImages.map(image => (
-                        <img src={image.url}/>
-                      ))
-                    }
-                  </div>
-                );
-              }
-              )
-          }
-        </div>
-
-
-        <div className="bookingContainer">
+          <div className="bookingContainer">
           <h2>${price} <span className='notBold'>per night</span></h2>
           <div className="bookingDetails">
             <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
@@ -277,9 +191,9 @@ function SpotDetails() {
             <p><u>{numReviews} reviews</u></p>
           </div>
           {
-            !ownedSpot &&
+            !ownedSpot && user &&
               (<div className="createBookingContainer">
-                <form onSubmit={handleBook}>
+                <form onSubmit={handleBook} className="bookingForm">
                     <label for='startDate'>
                       Start Date
                     </label>
@@ -300,12 +214,124 @@ function SpotDetails() {
                     onChange={(e) => setEndDate(e.target.value)}
                     required
                     />
-                    <button type="submit">BOOK</button>
+                    <button type="submit" id="bookButton">BOOK</button>
                   </form>
                   <ul className="createBookingErrors">
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                   </ul>
               </div>)
+          }
+          { !user &&
+            <h2 className="noUserWarning">Please Log In To Book</h2>
+
+          }
+          { ownedSpot &&
+            <h2 className="noUserWarning">Cannot Book At A Spot You Own</h2>
+
+          }
+        </div>
+        </div>
+        <hr/>
+
+        <div className="reviewsContainer">
+
+
+
+          <h2>Reviews</h2>
+          <div className="reviewsInfo">
+            <h2><i className="fa-solid fa-star"></i>{avgStarRating}</h2>
+            <span>&#183;</span>
+            <h2><u>{numReviews} reviews</u></h2>
+          </div>
+
+          { pastbooking && !alreadyReviewed &&
+            <div >
+              <h2>Post A Review</h2>
+              <hr/>
+              <form onSubmit={handleCreateReview} className="reviewForm">
+                <div className="reviewInput">
+                  <label for='review'>
+                    Review
+                  </label>
+                  <textarea
+                    type="textarea"
+                    id="review"
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="reviewInput">
+                  <label for='stars'>
+                    <i className="fa-solid fa-star"></i>
+                    {stars}
+                  </label>
+                  <input
+                    type="range"
+                    id="stars"
+                    max={5}
+                    step={1}
+                    value={stars}
+                    onChange={(e) => setStars(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="reviewInput">
+                  <label for='imageURL'>
+                    Image URL
+                  </label>
+                  <input
+                  type='text'
+                  id="imageURL"
+                  value={reviewImageURL}
+                  onChange={(e) => setReviewImageURL(e.target.value)}
+                  />
+                </div>
+                <div className="reviewInput">
+                  <button type="submit" id="basicButton" >Post</button>
+                </div>
+              </form>
+              <ul className="createReviewErrors">
+                    {reviewErrors.map((error, idx) => <li key={idx}>{error}</li>)}
+              </ul>
+            </div>
+          }
+
+          <hr/>
+
+          { reviews &&
+              reviews.map(review => {
+
+                const reviewImages = review.ReviewImages;
+                const uploadDate = new Date(review.createdAt);
+                uploadDate.setDate(uploadDate.getDate() + 1);
+                const reviewId = review.userId;
+                let userReview = null;
+
+                if (user) {
+                  userReview = reviewId == user.id;
+                }
+
+                return (
+                  <div>
+                    <p><i className="fa-solid fa-circle-user fa-2xl" /><span id="reviewerName">{review.User.firstName}</span>
+                    { userReview &&
+                        <button id='reviewDeleteButton' onClick={() => handleReviewDelete(review.id)}>Delete</button>
+                    }
+                    </p>
+
+                    <p id="reviewDate">{uploadDate.toDateString()}</p>
+                    <p>{review.review} <span>&#183;</span> <i className="fa-solid fa-star"></i> {review.stars}</p>
+                    { reviewImages &&
+                      reviewImages.map(image => (
+                        <img src={image.url} id="reviewImage" />
+                      ))
+                    }
+                  <hr/>
+                  </div>
+                );
+              }
+              )
           }
         </div>
 

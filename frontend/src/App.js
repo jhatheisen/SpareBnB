@@ -7,7 +7,6 @@ import * as sessionActions from './store/session';
 import HomePage from './components/HomePage';
 import SpotDetails from './components/SpotDetails';
 import EditSpotPage from './components/EditSpotPage';
-import MapContainer from './components/Maps';
 import UserBookings from './components/UserBookings';
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
+    <div onScroll={() => console.log('scrolling')}>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
@@ -28,7 +27,7 @@ function App() {
           <Route path='/user/bookings' component={UserBookings}/>
         </Switch>
       )}
-    </>
+    </div>
   );
 }
 

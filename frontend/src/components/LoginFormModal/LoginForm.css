@@ -19,3 +19,8 @@
 .loginContainer {
   width: 400px;
 }
+
+.loginErrors * {
+  color: #6f30c2;
+  font-weight: bold;
+}

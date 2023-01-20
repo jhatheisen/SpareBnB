@@ -19,3 +19,8 @@
 .signupContainer {
   width: 400px;
 }
+
+.signupErrors * {
+  color: #6f30c2;
+  font-weight: bold;
+}

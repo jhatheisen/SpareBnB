@@ -12,9 +12,9 @@
 }
 
 .spotName {
-  box-shadow: 0px 0px 10px rgb(197, 187, 187);
   width: fit-content;
   padding: 10px;
+  padding-left: 0px;
 }
 
 .titleBar {
@@ -59,7 +59,7 @@ hr {
   height: 1px;
   /* Set the hr color */
   background-color: rgb(218, 206, 206); /* Modern Browsers */
-  width:50%;
+  width:60%;
   margin:20px 0px;
 }
 
@@ -69,16 +69,42 @@ hr {
   gap: 10px;
 }
 
+.reviewForm {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  /* background-color: aqua; */
+}
+
+.reviewInput {
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+}
+
+textarea {
+  resize: none;
+  height: 75px;
+  margin-top: 0px;
+}
+
 .bookingContainer {
   box-shadow: 0px 0px 10px rgb(197, 187, 187);
   border: solid antiquewhite;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
+  position: sticky;
+  top: 0;
   width: 30%;
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
   background-color: white;
+  align-self: flex-start;
+  border-radius: 5%;
+}
+
+.mapnbooking {
+  display: flex;
+  justify-content: space-between;
 }
 
 .bookingContainer h2 {
@@ -107,8 +133,85 @@ hr {
   height: 100px;
 }
 
-.createBookingErrors, .createReviewErrors {
+.createBookingErrors,
+.createReviewErrors {
   display: flex;
   flex-direction: column;
   height: fit-content;
+}
+
+.createBookingErrors *,
+.createBookingErrors * {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+.bookingForm {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.bookingForm * {
+  max-width: 100%;
+  padding: 10px;
+  margin: 10px;
+  font-size: medium;
+}
+
+.noUserWarning {
+  padding-bottom: 20px;
+}
+
+.editButton, .deleteButton {
+  width: 100px;
+  height: 60px;
+  font-size: large;
+  border: none;
+  cursor: pointer;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10%;
+}
+
+#reviewerName {
+  margin-left: 10px;
+  font-size: large;
+}
+
+#reviewDate {
+  position: relative;
+  right: -20px;
+}
+
+#reviewImage {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+#reviewDeleteButton {
+  border: none;
+  cursor: pointer;
+  position: relative;
+  left: 10px;
+  padding: 10px;
+  font-size: medium;
+}
+
+#basicButton {
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 10px;
+  font-size: medium;
+}
+
+#bookButton {
+  border: none;
+  cursor: pointer;
 }
