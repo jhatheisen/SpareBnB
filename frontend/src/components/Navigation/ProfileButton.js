@@ -40,10 +40,15 @@ function ProfileButton({user}) {
     dispatch(sessionActions.logout());
     closeMenu();
     window.alert("Logout Successful")
+    history.push('/');
   };
 
   const redirectBookings = (e) => {
     history.push('/user/bookings');
+  }
+
+  const  redirectUserSpots = () => {
+    history.push('/user/spots');
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -68,7 +73,10 @@ function ProfileButton({user}) {
                 />
             </li>
             <li>
-              <button onClick={redirectBookings}>Check Bookings</button>
+              <button onClick={redirectUserSpots}>Check My Spots</button>
+            </li>
+            <li>
+              <button onClick={redirectBookings}>Check My Bookings</button>
             </li>
             <li>
               <button onClick={logout}>Log Out</button>

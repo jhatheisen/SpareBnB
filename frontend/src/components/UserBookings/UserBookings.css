@@ -6,6 +6,10 @@
   height: fit-content;
 }
 
+#bookingsHr {
+  width: 100%;
+}
+
 .deleteButtonDiv {
   background-color: aquamarine;
   height: 5px;
