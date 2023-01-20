@@ -9,7 +9,7 @@ function HomePage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const spots = useSelector(state => state.spots);
-  const currPage = useSelector(state => state.spots.page);
+  const currPage = useSelector((state) => state.spots.page);
 
   useEffect(() => {
     dispatch(loadSpots());

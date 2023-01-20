@@ -11,6 +11,7 @@ function EditSpotPage() {
   const {spotId} = useParams();
   let targetSpot = useSelector(state => state.spots.detailSpot);
 
+
   useEffect(() => {
     dispatch(spotsActions.showDetailSpot(spotId));
   }, []);
@@ -54,18 +55,15 @@ function EditSpotPage() {
       if (data && data.errors) setErrors(data.errors)
     }
 
-    // return dispatch(spotsActions.editSpot(editedSpot, spotId))
-    //   .catch( async (res) => {
-    //     const data = await res.json();
-    //     if (data && data.errors) setErrors(data.errors);
-    //   });
-
   }
 
   return (
     <div className="editSpotContainer">
-      <form onSubmit={handleSubmit} className="editSpotPage">
+      <div className="editSpotTitleDiv">
         <h1>Edit Spot</h1>
+        <button onClick={() => history.goBack()} id='backButton'>Go Back</button>
+      </div>
+      <form onSubmit={handleSubmit} className="editSpotPage">
         <label for="address">
         Address
         </label>

@@ -3,6 +3,9 @@ import { NavLink } from "react-router-dom";
 import { useSelector} from "react-redux";
 import ProfileButton from "./ProfileButton";
 import './Navigation.css';
+import logo from './s-logo.png';
+
+console.log(logo);
 
 function Navigation({isLoaded}) {
   const sessionUser = useSelector(state => state.session.user);
@@ -10,7 +13,7 @@ function Navigation({isLoaded}) {
   return (
     <ul className="navBar">
       <li>
-        <NavLink exact to='/'><i className="fa-2xl logo fa-solid fa-house-chimney-user"></i></NavLink>
+        <NavLink exact to='/'><img src={logo} className="logo" alt='SpareBnB logo'/></NavLink>
       </li>
       <h2 className="logoText">SpareBnB</h2>
       {isLoaded && (

@@ -1,15 +1,45 @@
 .bookingCard {
   /* background-color: aqua; */
-  border: solid black;
+  flex-direction: column;
+  border: solid rgba(0, 0, 0, 0.178);
   padding: 10px;
+  height: fit-content;
 }
+
+.deleteButtonDiv {
+  background-color: aquamarine;
+  height: 5px;
+}
+
 .bookingsContainer {
   /* background-color: yellowgreen; */
   display: flex;
+  align-items: flex-end;
   gap: 10px;
 }
 .deleteBookingErrors {
   display: flex;
   flex-direction: column;
   height: fit-content;
+}
+
+.deleteBookingErrors * {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+#status {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+#ended {
+  margin-top: 59px;
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+#bookingButton {
+  padding: 5px;
+  margin: 5px;
 }

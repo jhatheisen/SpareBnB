@@ -1,0 +1,31 @@
+.editSpotPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.editSpotErrors * {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+.editSpotErrors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editSpotTitleDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#backButton {
+  width: 100px;
+  height: 100px;
+  font-size: large;
+  border: none;
+  cursor: pointer;
+}

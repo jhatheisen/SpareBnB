@@ -16,6 +16,11 @@
   height: fit-content;
 }
 
+.createSpotErrors {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
 .createSpotContainer {
   width: 400px;
 }

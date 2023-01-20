@@ -59,7 +59,7 @@ function ProfileButton({user}) {
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
-            <li>
+            <li id="createSpotModalButton">
               <OpenModalMenuItem
                   itemText="Create A Spot"
                   modalComponent={<CreateSpotModal />}
