@@ -4,3 +4,11 @@ button {
   border-radius: 10%;
   background-color: rgb(231, 231, 231);
 }
+
+#loginButton,
+#signupButton {
+  border: none;
+  padding: 10px;
+  width: 30%;
+  cursor: pointer;
+}

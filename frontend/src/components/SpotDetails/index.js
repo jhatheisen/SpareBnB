@@ -26,7 +26,7 @@ function SpotDetails() {
   const bookings = useSelector(state => state.bookings.Bookings);
 
   const [review, setReview] = useState('');
-  const [stars, setStars] = useState(1);
+  const [stars, setStars] = useState(3);
   const [reviewImageURL, setReviewImageURL] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -134,13 +134,31 @@ function SpotDetails() {
       return
     }
 
+    e.preventDefault();
+
     try {
       const createReviewResponse = await dispatch(reviewActions.createNewReview(newReview, spotId));
       if (await createReviewResponse.ok) {
         window.alert('Review Created');
-        history.go(0);
       }
+
+      const reviewId = createReviewResponse.id;
+
+      if (reviewImageURL) {
+        try {
+          const createReviewImageResponse = await dispatch(reviewActions.addReviewImage({url: reviewImageURL}, reviewId));
+          if (await createReviewImageResponse.ok) {
+          }
+        } catch (e) {
+          const data = await e.json()
+          if (data && data.message) setReviewErrors([data.errors] || [data.message])
+          return;
+        }
+      }
+
+    history.go(0);
     } catch (e) {
+      console.log('caught');
       const data = await e.json()
       if (data && data.message) setReviewErrors([data.errors] || [data.message])
     }
@@ -286,6 +304,7 @@ function SpotDetails() {
                     type="range"
                     id="stars"
                     max={5}
+                    min={1}
                     step={1}
                     value={stars}
                     onChange={(e) => setStars(e.target.value)}

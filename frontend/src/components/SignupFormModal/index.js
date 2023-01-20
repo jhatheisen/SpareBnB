@@ -101,7 +101,7 @@ function SignupFormModal() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        <button type="submit">Sign Up</button>
+        <button type="submit" id="signupButton">Sign Up</button>
       </form>
 
       <ul className="signupErrors">
