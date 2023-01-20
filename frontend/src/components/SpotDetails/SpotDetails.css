@@ -203,6 +203,14 @@ textarea {
   font-size: medium;
 }
 
+#basicButton {
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 10px;
+  font-size: medium;
+}
+
 #bookButton {
   border: none;
   cursor: pointer;

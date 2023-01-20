@@ -60,7 +60,6 @@ function SpotDetails() {
     })
   }
 
-
   const {
     name,
     avgStarRating,
@@ -278,18 +277,18 @@ function SpotDetails() {
                   />
                 </div>
                 <div className="reviewInput">
-                  <label for='reviewImage'>
+                  <label for='imageURL'>
                     Image URL
                   </label>
                   <input
                   type='text'
-                  id="reviewImage"
+                  id="imageURL"
                   value={reviewImageURL}
                   onChange={(e) => setReviewImageURL(e.target.value)}
                   />
                 </div>
                 <div className="reviewInput">
-                  <button type="submit">Post</button>
+                  <button type="submit" id="basicButton" >Post</button>
                 </div>
               </form>
               <ul className="createReviewErrors">

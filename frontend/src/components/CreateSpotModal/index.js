@@ -125,8 +125,8 @@ function CreateSpotModal() {
         <label for="description">
         Description
         </label>
-          <input
-          type="text"
+          <textarea
+          type="textarea"
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -152,7 +152,7 @@ function CreateSpotModal() {
           onChange={(e) => setPreviewImage(e.target.value)}
           required
           />
-        <button type="submit">Create</button>
+        <button type="submit" id="updateSpotButton">Create</button>
       </form>
 
       <ul className="createSpotErrors">

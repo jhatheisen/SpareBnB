@@ -5,6 +5,11 @@
   gap: 10px;
 }
 
+.editSpotPage * {
+  font-size: medium;
+  width: 40%;
+}
+
 .editSpotErrors * {
   color: #6f30c2;
   font-weight: bold;
@@ -19,7 +24,7 @@
 .editSpotTitleDiv {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 #backButton {
@@ -28,4 +33,12 @@
   font-size: large;
   border: none;
   cursor: pointer;
+}
+
+#updateSpotButton {
+  border: none;
+  padding: 15px;
+  font-size: medium;
+  cursor: pointer;
+  margin: 5px;
 }

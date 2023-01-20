@@ -130,7 +130,7 @@ function EditSpotPage() {
         <label for="description">
         Description
         </label>
-          <input
+          <textarea
           type="text"
           id="description"
           value={description}
@@ -154,7 +154,7 @@ function EditSpotPage() {
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
           />
-        <button type="submit">Update</button>
+        <button type="submit" id="updateSpotButton">Update</button>
       </form>
 
       <ul className="editSpotErrors">
