@@ -45,7 +45,6 @@ export const deleteReview = (reviewId) => async (dispatch) => {
 }
 
 export const addReviewImage = (reviewImage, reviewId) => async (dispatch) => {
-  console.log('adding');
   const response = await csrfFetch(`/api/reviews/${reviewId}/images`, {
     method: "POST",
     body: JSON.stringify(reviewImage)

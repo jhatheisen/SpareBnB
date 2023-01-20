@@ -118,29 +118,12 @@ function SpotDetails() {
       stars
     }
 
-    if (ownedSpot) {
-      setReviewErrors(['Cannot Review Your Own Spot']);
-      e.preventDefault();
-      return
-    }
-    if (alreadyReviewed) {
-      setReviewErrors(['Can only have 1 active review.']);
-      e.preventDefault();
-      return ;
-    }
-    if (!pastbooking) {
-      setReviewErrors(['Must have booked this spot in the past, and booking started to review.']);
-      e.preventDefault();
-      return
-    }
-
     e.preventDefault();
 
     try {
       const createReviewResponse = await dispatch(reviewActions.createNewReview(newReview, spotId));
-      if (await createReviewResponse.ok) {
-        window.alert('Review Created');
-      }
+
+      window.alert('Review Created');
 
       const reviewId = createReviewResponse.id;
 
@@ -278,10 +261,19 @@ function SpotDetails() {
             <h2><u>{numReviews} reviews</u></h2>
           </div>
 
-          { user &&
+          <h2>Post A Review</h2>
+          <hr/>
+          {ownedSpot &&
+            <h3>Cannot Review Your Own Spot</h3>
+          }
+          {alreadyReviewed &&
+            <h3>Can only have 1 active review.</h3>
+          }
+          {!pastbooking && !ownedSpot &&
+            <h3>Must have booked this spot, and booking already started to review.</h3>
+          }
+          { user && !ownedSpot && !alreadyReviewed && pastbooking &&
             <div >
-              <h2>Post A Review</h2>
-              <hr/>
               <form onSubmit={handleCreateReview} className="reviewForm">
                 <div className="reviewInput">
                   <label for='review'>
