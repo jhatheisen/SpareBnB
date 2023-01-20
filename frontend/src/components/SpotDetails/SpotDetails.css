@@ -94,8 +94,9 @@ textarea {
   border: solid antiquewhite;
   /* display: flex; */
   /* flex-direction: column; */
-  position: sticky;
-  top: 0;
+  position: absolute;
+  top: 1050px;
+  right: 50px;
   width: 30%;
   background-color: white;
   align-self: flex-start;
