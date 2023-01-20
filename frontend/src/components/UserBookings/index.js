@@ -43,7 +43,8 @@ function UserBookings() {
 
   return (
     <div className='pageContainer'>
-      <h1>Bookings</h1>
+      <h1>Your Bookings</h1>
+      <hr id='bookingsHr'/>
       <ul className="deleteBookingErrors">
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
       </ul>
