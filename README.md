@@ -9,11 +9,12 @@ https://sparebnb.onrender.com/
 
 ## Summary
 
-This project is a demonstration of my understanding on how to engineer endpoints for the **backend** of a website. Showing my knowlege of database management and manipulation through a **live API**.
+This project is a demonstration of my understanding on how to develop a frontend professional website with **react**, as well as my ability to develop endpoints for the **backend** of a website. Showing my knowlege of database management and manipulation through a **live API**.
 
 ## Languages Used
+The frontend of this project was built with **react, redux, html, and css**
 
-The following project was built with **JavaScript** and uses **sqlite3** for  local testing of the database, and **PostgreSQL** for the live API.
+The backend of this project was built with **JavaScript** and uses **sqlite3** for  local testing of the database, and **PostgreSQL** for the live API.
 
 ## Dependencies
 
