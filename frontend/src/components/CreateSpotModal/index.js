@@ -40,12 +40,31 @@ function CreateSpotModal() {
       previewImage
     }
 
-    dispatch(spotsActions.createSpot(newSpot))
-      .then(closeModal)
-      .catch( async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      })
+    try {
+      const createSpotResponse = await dispatch(spotsActions.createSpot(newSpot));
+
+      const spotId = createSpotResponse.id;
+
+      if (previewImage) {
+        try {
+          const spotImage = {
+            url: previewImage,
+            preview: true
+          }
+
+          const createSpotImageResponse = await dispatch(spotsActions.addSpotImage(spotImage, spotId))
+        } catch (e) {
+          const data = await e.json();
+          if (data && data.errors) setErrors(data.errors);
+        }
+      }
+
+      closeModal();
+      history.push(`/spots/${spotId}`);
+    } catch (e) {
+      const data = await e.json();
+      if (data && data.errors) setErrors(data.errors);
+    }
   }
 
   return (
