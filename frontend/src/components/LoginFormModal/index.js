@@ -51,7 +51,7 @@ function LoginFormModal() {
             onChange={(e) => setPassword(e.target.value)}
             required
             />
-        <button type="submit">Log In</button>
+        <button type="submit" id="loginButton">Log In</button>
       </form>
       <ul className="loginErrors">
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}

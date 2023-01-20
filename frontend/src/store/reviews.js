@@ -31,13 +31,24 @@ export const createNewReview = (review, spotId) => async (dispatch) => {
     body: JSON.stringify(review)
   });
   const data = await response.json();
-  dispatch(addReview(data));
+  if (response.ok) return data;
+  // console.log(data);
+  // dispatch(addReview(data));
   return response;
 }
 
 export const deleteReview = (reviewId) => async (dispatch) => {
   const response = await csrfFetch(`/api/reviews/${reviewId}`, {
     method: "DELETE"
+  })
+  return response;
+}
+
+export const addReviewImage = (reviewImage, reviewId) => async (dispatch) => {
+  console.log('adding');
+  const response = await csrfFetch(`/api/reviews/${reviewId}/images`, {
+    method: "POST",
+    body: JSON.stringify(reviewImage)
   })
   return response;
 }
@@ -50,11 +61,11 @@ const reviewsReducer = (state = {}, action) => {
       newState = action.payload;
       return newState;
     }
-    case ADD_REVIEW: {
-      newState = {...state}
-      newState.Reviews = [...newState.Reviews, ...action.payload];
-      return newState;
-    }
+    // case ADD_REVIEW: {
+    //   newState = {...state}
+    //   newState.Reviews = [...newState.Reviews, action.payload];
+    //   return newState;
+    // }
     default:
       return state;
   }

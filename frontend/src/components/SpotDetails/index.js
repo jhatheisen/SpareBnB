@@ -26,7 +26,7 @@ function SpotDetails() {
   const bookings = useSelector(state => state.bookings.Bookings);
 
   const [review, setReview] = useState('');
-  const [stars, setStars] = useState(1);
+  const [stars, setStars] = useState(3);
   const [reviewImageURL, setReviewImageURL] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -45,9 +45,9 @@ function SpotDetails() {
   if (bookings) {
     bookings.forEach(booking => {
       const sameSpot = booking.spotId == spotId;
-      const bookingEndDate = new Date(booking.endDate);
-      bookingEndDate.setDate(bookingEndDate.getDate() + 1);
-      if (sameSpot && bookingEndDate <= currDate) pastbooking = true;
+      const bookingStartDate = new Date(booking.startDate);
+      bookingStartDate.setDate(bookingStartDate.getDate() + 1);
+      if (sameSpot && bookingStartDate <= currDate) pastbooking = true;
     })
   }
 
@@ -118,13 +118,47 @@ function SpotDetails() {
       stars
     }
 
+    if (ownedSpot) {
+      setReviewErrors(['Cannot Review Your Own Spot']);
+      e.preventDefault();
+      return
+    }
+    if (alreadyReviewed) {
+      setReviewErrors(['Can only have 1 active review.']);
+      e.preventDefault();
+      return ;
+    }
+    if (!pastbooking) {
+      setReviewErrors(['Must have booked this spot in the past, and booking started to review.']);
+      e.preventDefault();
+      return
+    }
+
+    e.preventDefault();
+
     try {
       const createReviewResponse = await dispatch(reviewActions.createNewReview(newReview, spotId));
       if (await createReviewResponse.ok) {
         window.alert('Review Created');
-        history.go(0);
       }
+
+      const reviewId = createReviewResponse.id;
+
+      if (reviewImageURL) {
+        try {
+          const createReviewImageResponse = await dispatch(reviewActions.addReviewImage({url: reviewImageURL}, reviewId));
+          if (await createReviewImageResponse.ok) {
+          }
+        } catch (e) {
+          const data = await e.json()
+          if (data && data.message) setReviewErrors([data.errors] || [data.message])
+          return;
+        }
+      }
+
+    history.go(0);
     } catch (e) {
+      console.log('caught');
       const data = await e.json()
       if (data && data.message) setReviewErrors([data.errors] || [data.message])
     }
@@ -244,7 +278,7 @@ function SpotDetails() {
             <h2><u>{numReviews} reviews</u></h2>
           </div>
 
-          { pastbooking && !alreadyReviewed &&
+          { user &&
             <div >
               <h2>Post A Review</h2>
               <hr/>
@@ -270,6 +304,7 @@ function SpotDetails() {
                     type="range"
                     id="stars"
                     max={5}
+                    min={1}
                     step={1}
                     value={stars}
                     onChange={(e) => setStars(e.target.value)}
@@ -295,6 +330,12 @@ function SpotDetails() {
                     {reviewErrors.map((error, idx) => <li key={idx}>{error}</li>)}
               </ul>
             </div>
+          }
+
+          { !user &&
+            (
+              <h2 className='noUserWarning'>Please Log In To Review</h2>
+            )
           }
 
           <hr/>
