@@ -7,6 +7,10 @@
   gap: 5px;
 }
 
+.createSpotModal * {
+  width: 40%;
+}
+
 .createSpotErrors {
   /* background-color: aquamarine; */
   /* position: fixed; */
@@ -16,6 +20,15 @@
   height: fit-content;
 }
 
+.createSpotErrors {
+  color: #6f30c2;
+  font-weight: bold;
+}
+
+#description {
+  overflow: scroll;
+}
+
 .createSpotContainer {
-  width: 400px;
+  width: 600px;
 }

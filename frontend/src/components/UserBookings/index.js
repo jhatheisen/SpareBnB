@@ -24,7 +24,6 @@ function UserBookings() {
   const deleteBooking = async (bookingId) => {
 
     const deleting = window.confirm("Are you sure you want to delete this booking?");
-    console.log(bookingId);
 
     if (deleting) {
 
@@ -38,8 +37,6 @@ function UserBookings() {
       } catch (e) {
         const data = await e.json();
         if (data && data.message) setErrors([data.message])
-        console.log(data);
-
       }
     }
   }
@@ -66,18 +63,18 @@ function UserBookings() {
 
             return (
               <div className='bookingCard'>
-                <button onClick={() => {directSpot(spotId)}}>View Spot</button>
+                <button id='bookingButton' onClick={() => {directSpot(spotId)}}>View Spot</button>
                 { !started && !ended &&
                 <div>
-                  <button onClick={() => {deleteBooking(id)}}>Delete Booking</button>
-                  <h3>Status: Upcoming</h3>
+                  <button id='bookingButton' onClick={() => {deleteBooking(id)}}>Delete Booking</button>
+                  <h3 id='status'>Status: Upcoming</h3>
                 </div>
                 }
                 { started && !ended &&
-                    <h3>Status: Started</h3>
+                    <h3 id='status'>Status: Started</h3>
                 }
                 { started && ended &&
-                    <h3>Status: Ended</h3>
+                    <h3 id='ended'>Status: Ended</h3>
                 }
                 <h4>Start: {start.toDateString()}</h4>
                 <h4>End: {end.toDateString()}</h4>
