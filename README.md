@@ -9,14 +9,17 @@ https://sparebnb.onrender.com/
 
 ## Summary
 
-This project is a demonstration of my understanding on how to develop a frontend professional website with **react**, as well as my ability to develop endpoints for the **backend** of a website. Showing my knowlege of database management and manipulation through a **live API**.
+This project is a demonstration of my understanding on how to develop a **frontend** professional website with **React**, as well as my ability to develop endpoints for the **backend** of a website. Showing my knowlege of database management and manipulation through a **live API**.
 
-## Languages Used
-The frontend of this project was built with **react, redux, html, and css**
+## Technologies Used
+
+The frontend of this project was built with **React, Redux, and Css**.
+
+Icons were sourced from **FontAwesome** and the fonts were sourced from **Google Fonts**.
 
 The backend of this project was built with **JavaScript** and uses **sqlite3** for  local testing of the database, and **PostgreSQL** for the live API.
 
-## Dependencies
+## Backend Dependencies
 
 All dependencies must be installed into the backend directory of this project, all these dependencies were installed in Ubuntu's command line using **"npm install </dependency/>"**...
 
