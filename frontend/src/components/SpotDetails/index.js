@@ -196,9 +196,8 @@ function SpotDetails() {
           <p>{description}</p>
         </div>
 
-        <hr/>
-        <div className="mapnbooking">
-          <MapContainer center={{lat, lng}}/>
+        {/* <div className="mapnbooking">
+          <MapContainer center={{lat, lng}}/> */}
 
           <div className="bookingContainer">
           <h2>${price} <span className='notBold'>per night</span></h2>
@@ -247,7 +246,7 @@ function SpotDetails() {
 
           }
         </div>
-        </div>
+        {/* </div> */}
         <hr/>
 
         <div className="reviewsContainer">
