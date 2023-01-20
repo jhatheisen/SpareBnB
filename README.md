@@ -1,5 +1,8 @@
 # SpareBnB
 
+![homepage](https://user-images.githubusercontent.com/106848904/213801860-edde9800-ae0e-4c6c-b368-598f115c20c5.png)
+
+
 ## Live Website
 https://sparebnb.onrender.com/
 
