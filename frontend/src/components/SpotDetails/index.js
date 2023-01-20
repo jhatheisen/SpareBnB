@@ -45,9 +45,9 @@ function SpotDetails() {
   if (bookings) {
     bookings.forEach(booking => {
       const sameSpot = booking.spotId == spotId;
-      const bookingEndDate = new Date(booking.endDate);
-      bookingEndDate.setDate(bookingEndDate.getDate() + 1);
-      if (sameSpot && bookingEndDate <= currDate) pastbooking = true;
+      const bookingStartDate = new Date(booking.startDate);
+      bookingStartDate.setDate(bookingStartDate.getDate() + 1);
+      if (sameSpot && bookingStartDate <= currDate) pastbooking = true;
     })
   }
 
@@ -116,6 +116,22 @@ function SpotDetails() {
     const newReview = {
       review,
       stars
+    }
+
+    if (ownedSpot) {
+      setReviewErrors(['Cannot Review Your Own Spot']);
+      e.preventDefault();
+      return
+    }
+    if (alreadyReviewed) {
+      setReviewErrors(['Can only have 1 active review.']);
+      e.preventDefault();
+      return ;
+    }
+    if (!pastbooking) {
+      setReviewErrors(['Must have booked this spot in the past, and booking started to review.']);
+      e.preventDefault();
+      return
     }
 
     try {
@@ -244,7 +260,7 @@ function SpotDetails() {
             <h2><u>{numReviews} reviews</u></h2>
           </div>
 
-          { pastbooking && !alreadyReviewed &&
+          { user &&
             <div >
               <h2>Post A Review</h2>
               <hr/>
@@ -295,6 +311,12 @@ function SpotDetails() {
                     {reviewErrors.map((error, idx) => <li key={idx}>{error}</li>)}
               </ul>
             </div>
+          }
+
+          { !user &&
+            (
+              <h2 className='noUserWarning'>Please Log In To Review</h2>
+            )
           }
 
           <hr/>

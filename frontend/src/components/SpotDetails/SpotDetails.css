@@ -140,8 +140,12 @@ textarea {
   height: fit-content;
 }
 
+.createReviewErrors {
+  align-items: flex-start;
+}
+
 .createBookingErrors *,
-.createBookingErrors * {
+.createReviewErrors * {
   color: #6f30c2;
   font-weight: bold;
 }
