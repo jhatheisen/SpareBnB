@@ -52,8 +52,4 @@ Then navigate into the backend directory and run **"sh reset-db.sh"** to load th
 
 You will now be able to run the server anytime you run **"npm start"** in the backend folder and open a second terminal and run **"npm start"** in the frontend.
 
-## Features
-
- - Sign Up/Log In
-
-## To Do
+## **See wiki for additional information**
