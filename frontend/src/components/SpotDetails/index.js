@@ -150,7 +150,6 @@ function SpotDetails() {
 
     history.go(0);
     } catch (e) {
-      console.log('caught');
       const data = await e.json()
       if (data && data.message) setReviewErrors([data.errors] || [data.message])
     }
