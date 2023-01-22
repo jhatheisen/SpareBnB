@@ -18,6 +18,8 @@
 
 .signupContainer {
   width: 400px;
+  height: 60vh;
+  overflow: scroll;
 }
 
 .signupErrors * {

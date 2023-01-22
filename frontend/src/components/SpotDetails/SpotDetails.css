@@ -59,8 +59,8 @@ hr {
   height: 1px;
   /* Set the hr color */
   background-color: rgb(218, 206, 206); /* Modern Browsers */
-  width:60%;
   margin:20px 0px;
+  width: 90%;
 }
 
 .reviewsInfo {
@@ -89,19 +89,7 @@ textarea {
   margin-top: 0px;
 }
 
-.bookingContainer {
-  box-shadow: 0px 0px 10px rgb(197, 187, 187);
-  border: solid antiquewhite;
-  /* display: flex; */
-  /* flex-direction: column; */
-  position: absolute;
-  top: 1050px;
-  right: 50px;
-  width: 30%;
-  background-color: white;
-  align-self: flex-start;
-  border-radius: 5%;
-}
+
 
 .mapnbooking {
   display: flex;
@@ -189,8 +177,7 @@ textarea {
 }
 
 #reviewDate {
-  position: relative;
-  right: -20px;
+  margin-left: 20px;
 }
 
 #reviewImage {
@@ -202,7 +189,7 @@ textarea {
 #reviewDeleteButton {
   border: none;
   cursor: pointer;
-  position: relative;
+  margin-left: 20px;
   left: 10px;
   padding: 10px;
   font-size: medium;
@@ -219,4 +206,30 @@ textarea {
 #bookButton {
   border: none;
   cursor: pointer;
+}
+
+.bookingContainer {
+  box-shadow: 0px 0px 10px rgb(197, 187, 187);
+  border: solid antiquewhite;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* position: absolute; */
+  top: 1050px;
+  right: 50px;
+  width: 30%;
+  background-color: white;
+  align-self: flex-start;
+  border-radius: 5%;
+  margin-top: 10vh;
+}
+
+.detailsReviewsBookings {
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: space-between ;
+}
+
+.detailsReviews {
+  /* background-color: gray; */
+  width: 80%;
 }

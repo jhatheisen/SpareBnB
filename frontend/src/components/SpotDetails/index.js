@@ -73,7 +73,8 @@ function SpotDetails() {
     price,
     lat,
     lng,
-    address
+    address,
+    previewImage
   } = detailedSpot;
 
   const handleEdit = () => {
@@ -88,6 +89,14 @@ function SpotDetails() {
       startDate,
       endDate
     }
+
+    const bookingStartDate = new Date(startDate);
+    bookingStartDate.setDate(bookingStartDate.getDate() + 1);
+
+    const bookingEndDate = new Date(endDate);
+    bookingEndDate.setDate(bookingEndDate.getDate() + 1);
+
+    if (bookingStartDate < currDate || endDate < currDate) return setErrors(["Start or End Date cannot be in the past."]);
 
     try {
       const createBookingResponse = await dispatch(bookingActions.createBooking(newBooking, spotId));
@@ -181,6 +190,10 @@ function SpotDetails() {
         </div>
 
         <div className="imageContainer">
+          { !SpotImages.length &&
+            <img src={previewImage} alt={name} className="previewImages"></img>
+          }
+
           {detailedSpot &&
             SpotImages.map(image => {
               return (
@@ -191,68 +204,17 @@ function SpotDetails() {
           {/* <button>Show more ...</button> */}
         </div>
 
+        <div className="detailsReviewsBookings">
+
+        <div className="detailsReviews">
         <div className="detailsContainer">
           <h2>Home hosted by {Owner.firstName} <i className="ownerProfile fa-xl fa-solid fa-circle-user" /></h2>
           <p>{description}</p>
         </div>
 
-        {/* <div className="mapnbooking">
-          <MapContainer center={{lat, lng}}/> */}
-
-          <div className="bookingContainer">
-          <h2>${price} <span className='notBold'>per night</span></h2>
-          <div className="bookingDetails">
-            <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
-            <span>&#183;</span>
-            <p><u>{numReviews} reviews</u></p>
-          </div>
-          {
-            !ownedSpot && user &&
-              (<div className="createBookingContainer">
-                <form onSubmit={handleBook} className="bookingForm">
-                    <label for='startDate'>
-                      Start Date
-                    </label>
-                    <input
-                    type='date'
-                    id='startDate'
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                    />
-                    <label for='endDate'>
-                      End Date
-                    </label>
-                    <input
-                    type='date'
-                    id='endDate'
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    required
-                    />
-                    <button type="submit" id="bookButton">BOOK</button>
-                  </form>
-                  <ul className="createBookingErrors">
-                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-                  </ul>
-              </div>)
-          }
-          { !user &&
-            <h2 className="noUserWarning">Please Log In To Book</h2>
-
-          }
-          { ownedSpot &&
-            <h2 className="noUserWarning">Cannot Book At A Spot You Own</h2>
-
-          }
-        </div>
-        {/* </div> */}
         <hr/>
 
         <div className="reviewsContainer">
-
-
-
           <h2>Reviews</h2>
           <div className="reviewsInfo">
             <h2><i className="fa-solid fa-star"></i>{avgStarRating}</h2>
@@ -268,10 +230,10 @@ function SpotDetails() {
           {alreadyReviewed &&
             <h3>Can only have 1 active review.</h3>
           }
-          {!pastbooking && !ownedSpot &&
+          {/* {!pastbooking && !ownedSpot && user &&
             <h3>Must have booked this spot, and booking already started to review.</h3>
-          }
-          { user && !ownedSpot && !alreadyReviewed && pastbooking &&
+          } */}
+          { user && !ownedSpot && !alreadyReviewed &&
             <div >
               <form onSubmit={handleCreateReview} className="reviewForm">
                 <div className="reviewInput">
@@ -331,6 +293,59 @@ function SpotDetails() {
 
           <hr/>
 
+        </div>
+        </div>
+
+        <div className="bookingContainer">
+          <h2>${price} <span className='notBold'>per night</span></h2>
+          <div className="bookingDetails">
+            <p><i className="fa-solid fa-star"></i>{avgStarRating}</p>
+            <span>&#183;</span>
+            <p><u>{numReviews} reviews</u></p>
+          </div>
+          {
+            !ownedSpot && user &&
+              (<div className="createBookingContainer">
+                <form onSubmit={handleBook} className="bookingForm">
+                    <label for='startDate'>
+                      Start Date
+                    </label>
+                    <input
+                    type='date'
+                    id='startDate'
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    required
+                    />
+                    <label for='endDate'>
+                      End Date
+                    </label>
+                    <input
+                    type='date'
+                    id='endDate'
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    required
+                    />
+                    <button type="submit" id="bookButton">BOOK</button>
+                  </form>
+                  <ul className="createBookingErrors">
+                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                  </ul>
+              </div>)
+          }
+          { !user &&
+            <h2 className="noUserWarning">Please Log In To Book</h2>
+
+          }
+          { ownedSpot &&
+            <h2 className="noUserWarning">Cannot Book At A Spot You Own</h2>
+
+          }
+        </div>
+
+        </div>
+
           { reviews &&
               reviews.map(review => {
 
@@ -365,10 +380,10 @@ function SpotDetails() {
               }
               )
           }
-        </div>
-
       </div>
+
     </div>
+
   );
 }
 

@@ -14,8 +14,8 @@ function CreateSpotModal() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
+  const [lat, setLat] = useState(100);
+  const [lng, setLng] = useState(100);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -111,7 +111,7 @@ function CreateSpotModal() {
           onChange={(e) => setCountry(e.target.value)}
           required
           />
-        <label for="lat">
+        {/* <label for="lat">
         Latitude
         </label>
           <input
@@ -130,7 +130,7 @@ function CreateSpotModal() {
           value={lng}
           onChange={(e) => setLng(e.target.value)}
           required
-          />
+          /> */}
         <label for="name">
         Name
         </label>

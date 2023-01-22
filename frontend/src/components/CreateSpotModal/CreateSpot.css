@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
+
 }
 
 .createSpotModal * {
@@ -31,4 +32,6 @@
 
 .createSpotContainer {
   width: 600px;
+  height: 80vh;
+  overflow: scroll;
 }

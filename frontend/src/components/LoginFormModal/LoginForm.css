@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   gap: 5px;
+
 }
 
 .loginErrors {
@@ -18,6 +19,8 @@
 
 .loginContainer {
   width: 400px;
+  height: 40vh;
+  overflow: scroll;
 }
 
 .loginErrors * {
