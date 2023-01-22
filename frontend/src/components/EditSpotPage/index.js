@@ -145,7 +145,7 @@ function EditSpotPage() {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           />
-        <label for="previewImage">
+        {/* <label for="previewImage">
         Preview Image URL
         </label>
           <input
@@ -153,7 +153,7 @@ function EditSpotPage() {
           id="previewImage"
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
-          />
+          /> */}
         <button type="submit" id="updateSpotButton">Update</button>
       </form>
 

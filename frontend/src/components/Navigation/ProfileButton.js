@@ -51,6 +51,10 @@ function ProfileButton({user}) {
     history.push('/user/spots');
   }
 
+  const demoLogin = (e) => {
+    dispatch(sessionActions.login({credential: "Demo-lition", password: "password"}));
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -99,6 +103,9 @@ function ProfileButton({user}) {
                 onItemClick={closeMenu}
                 id='signup'
               />
+            </li>
+            <li>
+              <button onClick={demoLogin}>Demo User</button>
             </li>
           </>
         )}
